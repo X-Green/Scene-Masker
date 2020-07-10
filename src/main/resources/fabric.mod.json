@@ -9,21 +9,20 @@
     "eeasee"
   ],
   "contact": {
-    "homepage": "https://fabricmc.net/",
-    "sources": "https://github.com/FabricMC/fabric-example-mod"
+    "sources": "https://github.com/X-Green/Scene-Masker"
   },
 
   "license": "CC0-1.0",
-  "icon": "assets/modid/icon.png",
+  "icon": "assets/scene_masker/icon.png",
 
   "environment": "*",
   "entrypoints": {
     "main": [
-      "net.fabricmc.example.ExampleMod"
+      "dev.eeasee.scenemasker.events.OnInit"
     ]
   },
   "mixins": [
-    "modid.mixins.json"
+    "scenemasker.mixins.json"
   ],
 
   "depends": {
