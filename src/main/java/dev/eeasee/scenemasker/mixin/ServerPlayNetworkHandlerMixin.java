@@ -1,7 +1,7 @@
 package dev.eeasee.scenemasker.mixin;
 
 import dev.eeasee.scenemasker.fakes.CustomPayloadC2SPacketInterface;
-import dev.eeasee.scenemasker.network.MaskerServer;
+import dev.eeasee.scenemasker.Masker;
 import dev.eeasee.scenemasker.network.ServerNetworkHandler;
 import net.minecraft.network.packet.c2s.play.CustomPayloadC2SPacket;
 import net.minecraft.server.network.ServerPlayNetworkHandler;
@@ -22,7 +22,7 @@ public class ServerPlayNetworkHandlerMixin
     private void onCustomCarpetPayload(CustomPayloadC2SPacket packet, CallbackInfo ci)
     {
         Identifier channel = ((CustomPayloadC2SPacketInterface) packet).getPacketChannel();
-        if (MaskerServer.MASKER_CHANNEL.equals(channel))
+        if (Masker.MASKER_CHANNEL.equals(channel))
         {
             ServerNetworkHandler.handleData(((CustomPayloadC2SPacketInterface) packet).getPacketData(), player);
             ci.cancel();
