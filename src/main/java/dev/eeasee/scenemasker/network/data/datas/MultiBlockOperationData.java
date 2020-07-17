@@ -4,7 +4,6 @@ import com.google.common.collect.Sets;
 import dev.eeasee.scenemasker.network.data.BaseData;
 import dev.eeasee.scenemasker.network.data.DataType;
 import dev.eeasee.scenemasker.network.data.Operations;
-import io.netty.buffer.Unpooled;
 import net.minecraft.util.PacketByteBuf;
 import net.minecraft.util.math.BlockPos;
 
@@ -23,7 +22,9 @@ public class MultiBlockOperationData implements BaseData {
 
     @Override
     public void apply() {
-
+        switch (OPERATION) {
+            case SET:
+        }
     }
 
     @Override
