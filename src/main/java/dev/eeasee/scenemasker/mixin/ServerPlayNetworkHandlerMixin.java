@@ -14,16 +14,14 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(ServerPlayNetworkHandler.class)
-public class ServerPlayNetworkHandlerMixin
-{
-    @Shadow public ServerPlayerEntity player;
+public class ServerPlayNetworkHandlerMixin {
+    @Shadow
+    public ServerPlayerEntity player;
 
     @Inject(method = "onCustomPayload", at = @At("HEAD"), cancellable = true)
-    private void onCustomCarpetPayload(CustomPayloadC2SPacket packet, CallbackInfo ci)
-    {
+    private void onCustomCarpetPayload(CustomPayloadC2SPacket packet, CallbackInfo ci) {
         Identifier channel = ((CustomPayloadC2SPacketInterface) packet).getPacketChannel();
-        if (Masker.MASKER_CHANNEL.equals(channel))
-        {
+        if (Masker.MASKER_CHANNEL.equals(channel)) {
             ServerNetworkHandler.handleData(((CustomPayloadC2SPacketInterface) packet).getPacketData(), player);
             ci.cancel();
         }
