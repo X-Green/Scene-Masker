@@ -4,5 +4,5 @@ import net.minecraft.util.PacketByteBuf;
 
 public interface BaseData {
     void apply();
-    PacketByteBuf encode();
+    void encode(PacketByteBuf packetByteBuf);
 }

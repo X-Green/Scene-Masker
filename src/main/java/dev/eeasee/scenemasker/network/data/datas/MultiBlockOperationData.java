@@ -2,21 +2,23 @@ package dev.eeasee.scenemasker.network.data.datas;
 
 import com.google.common.collect.Sets;
 import dev.eeasee.scenemasker.network.data.BaseData;
-import dev.eeasee.scenemasker.network.data.DataHead;
+import dev.eeasee.scenemasker.network.data.DataType;
+import dev.eeasee.scenemasker.network.data.Operations;
 import io.netty.buffer.Unpooled;
 import net.minecraft.util.PacketByteBuf;
 import net.minecraft.util.math.BlockPos;
 
 import java.util.Set;
 
-public class MultiBlockPosData implements BaseData {
+public class MultiBlockOperationData implements BaseData {
 
     private Set<BlockPos> blockPosSet;
-    private DataHead dataHead;
+    private final Operations OPERATION;
+    private final DataType DATA_TYPE = DataType.MULTI_BLOCK_OPERATION;
 
-    public MultiBlockPosData(Set<BlockPos> blockPosSet, DataHead dataHead) {
+    public MultiBlockOperationData(Set<BlockPos> blockPosSet, Operations OPERATION) {
         this.blockPosSet = blockPosSet;
-        this.dataHead = dataHead;
+        this.OPERATION = OPERATION;
     }
 
     @Override
@@ -25,16 +27,14 @@ public class MultiBlockPosData implements BaseData {
     }
 
     @Override
-    public PacketByteBuf encode() {
-        PacketByteBuf packetBuf = new PacketByteBuf(Unpooled.buffer());
-        packetBuf.writeEnumConstant(dataHead);
+    public void encode(PacketByteBuf packetBuf) {
+        packetBuf.writeEnumConstant(OPERATION);
         packetBuf.writeInt(blockPosSet.size());
         blockPosSet.forEach((packetBuf::writeBlockPos));
-        return packetBuf;
     }
 
-    public static MultiBlockPosData decode(PacketByteBuf packetByteBuf) {
-        DataHead dataHead = packetByteBuf.readEnumConstant(DataHead.class);
+    public static MultiBlockOperationData decode(PacketByteBuf packetByteBuf) {
+        Operations dataHead = packetByteBuf.readEnumConstant(Operations.class);
         int size = packetByteBuf.readInt();
         Set<BlockPos> blockPosSet1 = Sets.newHashSet();
         for (int i = 0; i < size; i++) {
@@ -42,7 +42,7 @@ public class MultiBlockPosData implements BaseData {
                     packetByteBuf.readBlockPos()
             );
         }
-        return new MultiBlockPosData(blockPosSet1, dataHead);
+        return new MultiBlockOperationData(blockPosSet1, dataHead);
     }
 
 }

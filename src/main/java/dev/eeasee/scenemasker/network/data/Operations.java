@@ -1,6 +1,6 @@
 package dev.eeasee.scenemasker.network.data;
 
-public enum DataHead {
+public enum Operations {
     ADD,
     REMOVE,
     QUERY,

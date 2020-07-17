@@ -1,7 +1,7 @@
 package dev.eeasee.scenemasker.mixin;
 
 import dev.eeasee.scenemasker.network.ClientNetworkHandler;
-import dev.eeasee.scenemasker.Masker;
+import dev.eeasee.scenemasker.masker.Masker;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayNetworkHandler;
 import net.minecraft.network.packet.s2c.play.CustomPayloadS2CPacket;
