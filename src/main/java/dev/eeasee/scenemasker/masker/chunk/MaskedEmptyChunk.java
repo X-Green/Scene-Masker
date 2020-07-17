@@ -3,7 +3,7 @@ package dev.eeasee.scenemasker.masker.chunk;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
 
-public class MaskedEmptyChunk implements IMaskedChunk {
+public class MaskedEmptyChunk implements MaskedChunk {
     @Override
     public void setMaskBooleanState(BlockPos blockPos, boolean value) {
     }
