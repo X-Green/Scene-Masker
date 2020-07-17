@@ -1,17 +1,17 @@
-package dev.eeasee.scenemasker.utils;
+package dev.eeasee.scenemasker.masker.chunk;
 
 import net.minecraft.util.math.BlockPos;
 
 import java.util.Set;
 
-public class ChunkSectionedBooleans {
+public class MaskedSection {
     private boolean[] booleans = new boolean[4096];
 
-    public ChunkSectionedBooleans() {
+    public MaskedSection() {
 
     }
 
-    public ChunkSectionedBooleans(Set<BlockPos> blockPosSet) {
+    public MaskedSection(Set<BlockPos> blockPosSet) {
         blockPosSet.forEach((blockPos -> {
             int x = blockPos.getX() & 15;
             int y = blockPos.getY() & 15;
@@ -42,5 +42,13 @@ public class ChunkSectionedBooleans {
 
     public boolean getBooleanWithoutCheck(int x, int y, int z) {
         return booleans[(x << 8) + (y << 4) + z];
+    }
+
+    public boolean isAllFalse() {
+        boolean flag = false;
+        for (int i = 0; i < 4096; i++) {
+            flag |= booleans[i];
+        }
+        return ! flag;
     }
 }
