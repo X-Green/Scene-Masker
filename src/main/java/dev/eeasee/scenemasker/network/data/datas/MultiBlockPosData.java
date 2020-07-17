@@ -19,7 +19,6 @@ public class MultiBlockPosData implements BaseData {
         this.dataHead = dataHead;
     }
 
-
     @Override
     public void apply() {
 
