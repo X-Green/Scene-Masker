@@ -1,6 +1,7 @@
 package dev.eeasee.scenemasker.mixin;
 
 import com.mojang.brigadier.CommandDispatcher;
+import dev.eeasee.scenemasker.command.MaskerCommand;
 import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
 import org.spongepowered.asm.mixin.Final;
@@ -19,7 +20,7 @@ public abstract class CommandManagerMixin {
 
     @Inject(method = "<init>", at = @At("RETURN"))
     private void onRegister(boolean boolean_1, CallbackInfo ci) {
-
+        MaskerCommand.register(dispatcher);
     }
 
 }
