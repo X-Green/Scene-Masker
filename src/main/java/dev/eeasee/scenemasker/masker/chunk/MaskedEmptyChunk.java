@@ -19,6 +19,11 @@ public class MaskedEmptyChunk implements MaskedChunk {
     }
 
     @Override
+    public MaskedSection getOrCreateSection(int index) {
+        return null;
+    }
+
+    @Override
     public boolean isSectionEmpty(int index) {
         return true;
     }

@@ -3,16 +3,15 @@ package dev.eeasee.scenemasker.masker.chunk;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
 
-public class MaskedRealChunk implements MaskedChunk {
+public class MaskedRealChunk {
     private final ChunkPos chunkPos;
-    private MaskedSection[] subChunks = new MaskedSection[4];
+    private MaskedSection[] sections = new MaskedSection[4];
     private boolean changed = false;
 
     public MaskedRealChunk(ChunkPos chunkPos) {
         this.chunkPos = chunkPos;
     }
 
-    @Override
     public void setMaskBooleanState(BlockPos blockPos, boolean value) {
         int sectionIndex = blockPos.getY() >> 4;
         if ((value) || ! this.isSectionEmpty(sectionIndex)) {
@@ -21,37 +20,41 @@ public class MaskedRealChunk implements MaskedChunk {
         changed = true;
     }
 
-    @Override
     public boolean getMaskBooleanState(BlockPos blockPos) {
+        int index = blockPos.getY() >> 4;
+        if (isSectionEmpty(index)) {
+
+        }
+
         return false;
     }
 
-    @Override
     public MaskedSection getSection(int index) {
-        MaskedSection target = subChunks[index];
+        return sections[index];
+    }
+
+    public MaskedSection getOrCreateSection(int index) {
+        MaskedSection target = sections[index];
         if (target == null) {
             target = new MaskedSection();
-            subChunks[index] = target;
+            sections[index] = target;
         }
         return target;
     }
 
-    @Override
     public boolean isSectionEmpty(int index) {
-        return subChunks[index] == null;
+        return sections[index] == null;
     }
 
-    @Override
     public ChunkPos getPos() {
         return this.chunkPos;
     }
 
-    @Override
     public void clean() {
         if (!changed) return;
         for (int i = 0; i < 4; i++) {
-            if (subChunks[i].isAllFalse()) {
-                subChunks[i] = null;
+            if (sections[i].isAllFalse()) {
+                sections[i] = null;
             }
         }
     }

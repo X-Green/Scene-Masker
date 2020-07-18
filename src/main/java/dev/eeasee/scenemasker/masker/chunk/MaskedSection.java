@@ -6,6 +6,7 @@ import java.util.Set;
 
 public class MaskedSection {
     private boolean[] booleans = new boolean[4096];
+    public final static MaskedSection MASKED_EMPTY_SECTION = new MaskedEmptySection();
 
     public MaskedSection() {
 
@@ -49,6 +50,38 @@ public class MaskedSection {
         for (int i = 0; i < 4096; i++) {
             flag |= booleans[i];
         }
-        return ! flag;
+        return !flag;
+    }
+
+    private static class MaskedEmptySection extends MaskedSection {
+        MaskedEmptySection() {
+        }
+
+        public void setBoolean(BlockPos blockPos, boolean value) {
+        }
+
+        public void setBoolean(int x, int y, int z, boolean value) {
+        }
+
+        public void setBooleanWithoutCheck(int x, int y, int z, boolean value) {
+        }
+
+        public boolean getBoolean(BlockPos blockPos) {
+            return false;
+        }
+
+        public boolean getBoolean(int x, int y, int z) {
+            return false;
+        }
+
+        public boolean getBooleanWithoutCheck(int x, int y, int z) {
+            return false;
+        }
+
+        public boolean isAllFalse() {
+            return true;
+        }
+
+
     }
 }
