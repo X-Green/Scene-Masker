@@ -1,4 +1,4 @@
-package dev.eeasee.scenemasker.masker;
+package dev.eeasee.scenemasker.world;
 
 import com.google.common.collect.Maps;
 import net.minecraft.util.math.BlockPos;

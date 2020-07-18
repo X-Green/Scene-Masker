@@ -11,7 +11,7 @@ import java.util.Map;
 import java.util.function.Consumer;
 
 public class DataParser {
-    private final static Map<DataType, Consumer<PacketByteBuf>> PACKET_CONSUMER_MAP = new HashMap<DataType, Consumer<PacketByteBuf>>(){{
+    private final static Map<DataType, Consumer<PacketByteBuf>> PACKET_CONSUMER_MAP = new HashMap<DataType, Consumer<PacketByteBuf>>() {{
         put(DataType.MULTI_BLOCK_OPERATION, (packetByteBuf -> MultiBlockOperationData.decode(packetByteBuf).apply()));
         put(DataType.SETTINGS, (packetByteBuf -> SettingsData.decode(packetByteBuf).apply()));
     }};
