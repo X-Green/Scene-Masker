@@ -1,7 +1,6 @@
 package dev.eeasee.scenemasker.masker;
 
 import com.google.common.collect.Maps;
-import dev.eeasee.scenemasker.masker.chunk.MaskedEmptyChunk;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
 
@@ -11,7 +10,7 @@ public class MaskedWorld {
     private Map<ChunkPos, MaskedChunk> chunkMap = Maps.newHashMap();
 
     public MaskedChunk getMaskedChunk(ChunkPos chunkPos) {
-        return chunkMap.getOrDefault(chunkPos, MaskedEmptyChunk.getInstance());
+        return chunkMap.getOrDefault(chunkPos, MaskedChunk.EMPTY);
     }
 
     public MaskedChunk getMaskedChunk(BlockPos blockPos) {
@@ -27,6 +26,6 @@ public class MaskedWorld {
     }
 
     public boolean isBlockMasked(BlockPos blockPos) {
-
+        return this.getMaskedChunk(blockPos).getMaskBooleanState(blockPos);
     }
 }

@@ -1,4 +1,4 @@
-package dev.eeasee.scenemasker.masker.chunk;
+package dev.eeasee.scenemasker.masker;
 
 import net.minecraft.util.math.BlockPos;
 
