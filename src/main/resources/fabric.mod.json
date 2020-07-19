@@ -2,7 +2,6 @@
   "schemaVersion": 1,
   "id": "scene-masker",
   "version": "1.15.2",
-
   "name": "Scene Masker",
   "description": "Let only selected blocks to be shown",
   "authors": [
@@ -11,10 +10,8 @@
   "contact": {
     "sources": "https://github.com/X-Green/Scene-Masker"
   },
-
   "license": "CC0-1.0",
   "icon": "assets/scene_masker/icon.png",
-
   "environment": "*",
   "entrypoints": {
     "main": [
@@ -24,7 +21,6 @@
   "mixins": [
     "scenemasker.mixins.json"
   ],
-
   "depends": {
     "fabricloader": ">=0.7.4",
     "fabric": "*",

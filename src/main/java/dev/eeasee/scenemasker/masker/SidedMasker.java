@@ -12,7 +12,6 @@ public class SidedMasker {
         this.SIDE = side;
     }
 
-
     public boolean isBlockRenderedMasked(BlockPos blockPos) {
         if (!properties.isApplied) {
             return false;
@@ -28,4 +27,13 @@ public class SidedMasker {
         SERVER,
         CLIENT
     }
+
+    public static class MaskerProperties {
+        public boolean isApplied = true;
+        public boolean isLayered = false;
+        public boolean isReverted = false;
+
+        public int appliedLayer = 0;
+    }
+
 }
