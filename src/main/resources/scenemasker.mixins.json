@@ -9,6 +9,8 @@
     "ClientPlayNetworkHandlerMixin",
     "CommandManagerMixin",
     "CustomPayloadC2SPacketMixin",
+    "MinecraftClientMixin",
+    "MinecraftServerMixin",
     "ServerPlayNetworkHandlerMixin"
   ],
   "client": [

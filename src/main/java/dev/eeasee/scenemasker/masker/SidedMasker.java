@@ -6,6 +6,11 @@ import net.minecraft.util.math.BlockPos;
 public class SidedMasker {
     private MaskerProperties properties = new MaskerProperties();
     private MaskedWorld maskedWorld;
+    public final Side SIDE;
+
+    public SidedMasker(Side side) {
+        this.SIDE = side;
+    }
 
 
     public boolean isBlockRenderedMasked(BlockPos blockPos) {
@@ -19,7 +24,7 @@ public class SidedMasker {
         return (properties.isReverted != flag);
     }
 
-    public static enum Side {
+    public enum Side {
         SERVER,
         CLIENT
     }
