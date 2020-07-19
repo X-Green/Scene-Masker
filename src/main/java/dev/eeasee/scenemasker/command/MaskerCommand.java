@@ -5,6 +5,7 @@ import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
+import dev.eeasee.scenemasker.Masker;
 import net.minecraft.command.arguments.BlockPosArgumentType;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.util.math.BlockPos;
@@ -29,14 +30,17 @@ public class MaskerCommand {
     }
 
     private static int operateBlockPos(CommandContext<ServerCommandSource> serverCommandSourceCommandContext) throws CommandSyntaxException {
+        if (Masker.masker_server == null) {
+            return 0;
+        }
         String operation = StringArgumentType.getString(serverCommandSourceCommandContext, "operation");
         BlockPos blockPos = BlockPosArgumentType.getBlockPos(serverCommandSourceCommandContext, "blockPos");
         switch (operation) {
             case "add": {
-
+                Masker.masker_server.setBlockMaskingState(blockPos, true);
             }
             case "remove": {
-
+                Masker.masker_server.setBlockMaskingState(blockPos, false);
             }
         }
         System.out.println(operation);

@@ -28,4 +28,8 @@ public class MaskedWorld {
     public boolean isBlockMasked(BlockPos blockPos) {
         return this.getMaskedChunk(blockPos).getMaskBooleanState(blockPos);
     }
+
+    public void setBlockMasked(BlockPos blockPos, boolean value) {
+        this.getMaskedChunk(blockPos).setMaskBooleanState(blockPos, value);
+    }
 }

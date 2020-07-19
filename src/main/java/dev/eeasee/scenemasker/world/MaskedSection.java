@@ -33,6 +33,18 @@ public class MaskedSection {
         booleans[(x << 8) + (y << 4) + z] = value;
     }
 
+    public void setBooleanWithoutCheck(int index, boolean value) {
+        booleans[index] = value;
+    }
+
+    public void setBooleansArray(boolean[] booleans) throws Exception {
+        if (booleans.length != 4096) {
+            throw new Exception("Not a valid masked section boolean array!");
+        } else {
+            System.arraycopy(booleans, 0, this.booleans, 0, 4096);
+        }
+    }
+
     public boolean getBoolean(BlockPos blockPos) {
         return getBoolean(blockPos.getX(), blockPos.getY(), blockPos.getZ());
     }
@@ -43,6 +55,16 @@ public class MaskedSection {
 
     public boolean getBooleanWithoutCheck(int x, int y, int z) {
         return booleans[(x << 8) + (y << 4) + z];
+    }
+
+    public boolean getBooleanWithoutCheck(int index) {
+        return booleans[index];
+    }
+
+    public boolean[] getBooleansArray() {
+        boolean[] target = new boolean[4096];
+        System.arraycopy(this.booleans, 0, target, 0, 4096);
+        return target;
     }
 
     public boolean isAllFalse() {
@@ -57,27 +79,52 @@ public class MaskedSection {
         MaskedEmptySection() {
         }
 
+        @Override
         public void setBoolean(BlockPos blockPos, boolean value) {
         }
 
+        @Override
         public void setBoolean(int x, int y, int z, boolean value) {
         }
 
+        @Override
         public void setBooleanWithoutCheck(int x, int y, int z, boolean value) {
         }
 
+        @Override
+        public void setBooleanWithoutCheck(int index, boolean value) {
+        }
+
+        @Override
+        public void setBooleansArray(boolean[] booleans) {
+        }
+
+        @Override
         public boolean getBoolean(BlockPos blockPos) {
             return false;
         }
 
+        @Override
         public boolean getBoolean(int x, int y, int z) {
             return false;
         }
 
+        @Override
         public boolean getBooleanWithoutCheck(int x, int y, int z) {
             return false;
         }
 
+        @Override
+        public boolean getBooleanWithoutCheck(int index) {
+            return false;
+        }
+
+        @Override
+        public boolean[] getBooleansArray() {
+            return new boolean[4096];
+        }
+
+        @Override
         public boolean isAllFalse() {
             return true;
         }
