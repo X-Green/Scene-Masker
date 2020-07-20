@@ -6,4 +6,10 @@ public interface BaseData {
     void apply();
 
     void encode(PacketByteBuf packetByteBuf);
+
+    void decode(PacketByteBuf packetByteBuf);
+
+    DataType getDataType();
+
+    boolean isValid();
 }

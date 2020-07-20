@@ -10,11 +10,17 @@ import java.util.Set;
 
 public class MultiBlockUpdateData implements BaseData {
 
-    private Set<BlockPos> blockPosSet;
-    private final DataType DATA_TYPE = DataType.MULTI_BLOCK_UPDATE;
+    private boolean value;
 
-    public MultiBlockUpdateData(Set<BlockPos> blockPosSet) {
+    private Set<BlockPos> blockPosSet;
+
+
+    public MultiBlockUpdateData(Set<BlockPos> blockPosSet, boolean value) {
+        this.value = value;
         this.blockPosSet = blockPosSet;
+    }
+
+    public MultiBlockUpdateData() {
     }
 
     @Override
@@ -23,11 +29,14 @@ public class MultiBlockUpdateData implements BaseData {
 
     @Override
     public void encode(PacketByteBuf packetBuf) {
+        packetBuf.writeBoolean(value);
         packetBuf.writeInt(blockPosSet.size());
         blockPosSet.forEach((packetBuf::writeBlockPos));
     }
 
-    public static MultiBlockUpdateData decode(PacketByteBuf packetByteBuf) {
+    @Override
+    public void decode(PacketByteBuf packetByteBuf) {
+        boolean value = packetByteBuf.readBoolean();
         int size = packetByteBuf.readInt();
         Set<BlockPos> blockPosSet1 = Sets.newHashSet();
         for (int i = 0; i < size; i++) {
@@ -35,7 +44,19 @@ public class MultiBlockUpdateData implements BaseData {
                     packetByteBuf.readBlockPos()
             );
         }
-        return new MultiBlockUpdateData(blockPosSet1);
+
+        this.value = value;
+        this.blockPosSet = blockPosSet1;
+    }
+
+    @Override
+    public DataType getDataType() {
+        return DataType.MULTI_BLOCK_UPDATE;
+    }
+
+    @Override
+    public boolean isValid() {
+        return this.blockPosSet != null;
     }
 
 }
