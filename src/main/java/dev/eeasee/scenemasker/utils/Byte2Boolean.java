@@ -1,12 +1,12 @@
 package dev.eeasee.scenemasker.utils;
 
 public class Byte2Boolean {
-    private static boolean[] convertToBooleanArray(byte[] bytes) {
+    public static boolean[] convertToBooleanArray(byte[] bytes) {
         boolean [] result = new boolean[bytes.length << 3];
 
-        for (int i=0; i<bytes.length; i++) {
-            int index = i<<3;
-            result[index|0] = (bytes[i] & 0x80) != 0;
+        for (int i = 0; i < bytes.length; i++) {
+            int index = i << 3;
+            result[index] = (bytes[i] & 0x80) != 0;
             result[index|1] = (bytes[i] & 0x40) != 0;
             result[index|2] = (bytes[i] & 0x20) != 0;
             result[index|3] = (bytes[i] & 0x10) != 0;
@@ -19,10 +19,10 @@ public class Byte2Boolean {
         return result;
     }
 
-    private static byte[] convertToByteArray(boolean[] booleans) {
+    public static byte[] convertToByteArray(boolean[] booleans) {
         byte[] result = new byte[booleans.length >> 3];
 
-        for (int i=0; i<result.length; i++) {
+        for (int i = 0; i < result.length; i++) {
             int index = i << 3;
             byte b = (byte)(
                     (booleans[index] ? 1<<7 : 0) |
@@ -38,5 +38,6 @@ public class Byte2Boolean {
 
         return result;
     }
+
 
 }
