@@ -9,6 +9,8 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
+import java.util.function.BooleanSupplier;
+
 @Mixin(MinecraftServer.class)
 public class MinecraftServerMixin {
     @Inject(method = "loadWorld", at = @At(value = "RETURN"))
@@ -19,5 +21,10 @@ public class MinecraftServerMixin {
     @Inject(method = "shutdown", at = @At(value = "RETURN"))
     private void onServerClosed(CallbackInfo ci) {
         Masker.onServerClosed();
+    }
+
+    @Inject(method = "tick", at = @At("RETURN"))
+    private void onServerTicked(BooleanSupplier shouldKeepTicking, CallbackInfo ci) {
+        Masker.onServerTicked();
     }
 }

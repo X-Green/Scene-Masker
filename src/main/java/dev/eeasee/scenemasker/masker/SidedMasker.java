@@ -29,6 +29,10 @@ public class SidedMasker {
         this.maskedWorld.setBlockMasked(blockPos, value);
     }
 
+    public void tick() {
+
+    }
+
     public enum Side {
         SERVER,
         CLIENT

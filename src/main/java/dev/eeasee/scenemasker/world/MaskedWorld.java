@@ -17,6 +17,20 @@ public class MaskedWorld {
         return getMaskedChunk(new ChunkPos(blockPos));
     }
 
+    private MaskedChunk getMaskedChunkOrNew(ChunkPos chunkPos) {
+        if (chunkMap.containsKey(chunkPos)) {
+            return chunkMap.get(chunkPos);
+        } else {
+            MaskedChunk newChunk = new MaskedChunk(chunkPos);
+            chunkMap.put(chunkPos, newChunk);
+            return newChunk;
+        }
+    }
+
+    private MaskedChunk getMaskedChunkOrNew(BlockPos blockPos) {
+        return getMaskedChunkOrNew(new ChunkPos(blockPos));
+    }
+
     public boolean isChunkEmpty(ChunkPos chunkPos) {
         return chunkMap.containsKey(chunkPos);
     }
@@ -30,6 +44,6 @@ public class MaskedWorld {
     }
 
     public void setBlockMasked(BlockPos blockPos, boolean value) {
-        this.getMaskedChunk(blockPos).setMaskBooleanState(blockPos, value);
+        this.getMaskedChunkOrNew(blockPos).setMaskBooleanState(blockPos, value);
     }
 }

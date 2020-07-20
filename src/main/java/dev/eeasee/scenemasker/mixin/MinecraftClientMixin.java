@@ -20,4 +20,9 @@ public class MinecraftClientMixin {
     private void onDisconnectedToServer(Screen screen, CallbackInfo ci) {
         Masker.onDisconnectedToServer();
     }
+
+    @Inject(method = "tick", at = @At("RETURN"))
+    private void onClientTicked(CallbackInfo ci) {
+        System.out.println("CLIENT TICKED!");
+    }
 }

@@ -23,6 +23,10 @@ public class Masker {
         LOGGER.debug("SClose");
     }
 
+    public static void onServerTicked() {
+        masker_server.tick();
+    }
+
     public static void onConnectedToServer() {
         masker_client = new SidedMasker(SidedMasker.Side.CLIENT);
         LOGGER.debug("CStart");
@@ -31,5 +35,9 @@ public class Masker {
     public static void onDisconnectedToServer() {
         masker_client = null;
         LOGGER.debug("CClose");
+    }
+
+    public static void onClientTicked() {
+        masker_client.tick();
     }
 }
