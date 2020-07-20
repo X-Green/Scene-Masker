@@ -2,6 +2,7 @@ package dev.eeasee.scenemasker.network.data.datas;
 
 import dev.eeasee.scenemasker.network.data.BaseData;
 import dev.eeasee.scenemasker.network.data.DataType;
+import dev.eeasee.scenemasker.network.data.PacketSide;
 import dev.eeasee.scenemasker.utils.Byte2Boolean;
 import net.minecraft.util.PacketByteBuf;
 import net.minecraft.util.math.ChunkSectionPos;
@@ -12,13 +13,16 @@ public class ChunkSectionUpdateData implements BaseData {
 
     private boolean[] values;
 
-    public ChunkSectionUpdateData(boolean[] booleans, ChunkSectionPos sectionPos) {
+    private final PacketSide SIDE;
+
+    public ChunkSectionUpdateData(boolean[] booleans, ChunkSectionPos sectionPos, PacketSide side) {
         this.sectionPos = sectionPos;
         this.values = booleans;
+        this.SIDE = side;
     }
 
-    public ChunkSectionUpdateData() {
-
+    public ChunkSectionUpdateData(PacketSide side) {
+        this.SIDE = side;
     }
 
     @Override
@@ -48,6 +52,11 @@ public class ChunkSectionUpdateData implements BaseData {
     @Override
     public DataType getDataType() {
         return DataType.CHUNK_SECTION_UPDATE;
+    }
+
+    @Override
+    public PacketSide getSide() {
+        return SIDE;
     }
 
     @Override

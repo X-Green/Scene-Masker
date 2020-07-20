@@ -3,6 +3,7 @@ package dev.eeasee.scenemasker.network.data.datas;
 import com.google.common.collect.Sets;
 import dev.eeasee.scenemasker.network.data.BaseData;
 import dev.eeasee.scenemasker.network.data.DataType;
+import dev.eeasee.scenemasker.network.data.PacketSide;
 import net.minecraft.util.PacketByteBuf;
 import net.minecraft.util.math.BlockPos;
 
@@ -14,13 +15,17 @@ public class MultiBlockUpdateData implements BaseData {
 
     private Set<BlockPos> blockPosSet;
 
+    private final PacketSide SIDE;
 
-    public MultiBlockUpdateData(Set<BlockPos> blockPosSet, boolean value) {
+
+    public MultiBlockUpdateData(Set<BlockPos> blockPosSet, boolean value, PacketSide side) {
         this.value = value;
         this.blockPosSet = blockPosSet;
+        this.SIDE = side;
     }
 
-    public MultiBlockUpdateData() {
+    public MultiBlockUpdateData(PacketSide side) {
+        this.SIDE = side;
     }
 
     @Override
@@ -52,6 +57,11 @@ public class MultiBlockUpdateData implements BaseData {
     @Override
     public DataType getDataType() {
         return DataType.MULTI_BLOCK_UPDATE;
+    }
+
+    @Override
+    public PacketSide getSide() {
+        return SIDE;
     }
 
     @Override

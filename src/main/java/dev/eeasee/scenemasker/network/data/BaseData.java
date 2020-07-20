@@ -11,5 +11,7 @@ public interface BaseData {
 
     DataType getDataType();
 
+    PacketSide getSide();
+
     boolean isValid();
 }
