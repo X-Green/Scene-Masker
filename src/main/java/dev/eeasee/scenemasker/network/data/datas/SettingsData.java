@@ -7,7 +7,7 @@ import net.minecraft.util.PacketByteBuf;
 public class SettingsData implements BaseData {
 
 
-    private final DataType DATA_TYPE = DataType.MULTI_BLOCK_OPERATION;
+    private final DataType DATA_TYPE = DataType.MULTI_BLOCK_UPDATE;
 
     @Override
     public void apply() {
