@@ -8,7 +8,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
 
 @Mixin(BlockState.class)
-public class BlockStateMixin {
+public abstract class BlockStateMixin {
     @Redirect(method = "getRenderType", at = @At(
             value = "INVOKE", target = "Lnet/minecraft/block/Block;getRenderType(Lnet/minecraft/block/BlockState;)Lnet/minecraft/block/BlockRenderType;"
     ))

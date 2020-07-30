@@ -10,7 +10,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(IntegratedServer.class)
-public class IntegratedServerMixin {
+public abstract class IntegratedServerMixin {
     @Inject(method = "loadWorld", at = @At(value = "RETURN"))
     private void onServerStarted(String name, String serverName, long seed, LevelGeneratorType generatorType, JsonElement generatorSettings, CallbackInfo ci) {
         Masker.onServerStarted();

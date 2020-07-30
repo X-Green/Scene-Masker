@@ -9,6 +9,8 @@ import java.util.Map;
 public class MaskedWorld {
     private Map<ChunkPos, MaskedChunk> chunkMap = Maps.newHashMap();
 
+
+
     private MaskedChunk getMaskedChunk(ChunkPos chunkPos) {
         return chunkMap.getOrDefault(chunkPos, MaskedChunk.EMPTY);
     }
