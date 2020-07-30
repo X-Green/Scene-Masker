@@ -4,12 +4,12 @@ import dev.eeasee.scenemasker.world.MaskedWorld;
 import jdk.nashorn.internal.ir.Block;
 import net.minecraft.util.math.BlockPos;
 
-public class SidedMasker {
+public class MaskedWorldParser {
     private MaskerProperties properties = new MaskerProperties();
     private MaskedWorld maskedWorld;
     public final Side SIDE;
 
-    public SidedMasker(Side side) {
+    public MaskedWorldParser(Side side) {
         this.SIDE = side;
         this.maskedWorld = new MaskedWorld();
     }
