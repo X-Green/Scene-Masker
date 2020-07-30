@@ -1,6 +1,5 @@
 package dev.eeasee.scenemasker;
 
-import dev.eeasee.scenemasker.masker.MaskedWorldParser;
 import net.minecraft.util.Identifier;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;

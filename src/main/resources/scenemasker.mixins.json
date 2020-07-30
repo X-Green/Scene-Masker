@@ -12,7 +12,8 @@
     "IntegratedServerMixin",
     "MinecraftClientMixin",
     "MinecraftServerMixin",
-    "ServerPlayNetworkHandlerMixin"
+    "ServerPlayNetworkHandlerMixin",
+    "WorldMixin"
   ],
   "client": [
   ],
