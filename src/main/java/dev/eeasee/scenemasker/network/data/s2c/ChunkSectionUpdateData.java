@@ -1,4 +1,4 @@
-package dev.eeasee.scenemasker.network.data.datas;
+package dev.eeasee.scenemasker.network.data.s2c;
 
 import dev.eeasee.scenemasker.fakes.WorldInterface;
 import dev.eeasee.scenemasker.network.data.BaseData;
@@ -17,16 +17,13 @@ public class ChunkSectionUpdateData implements BaseData {
 
     private boolean[] values;
 
-    private final PacketSide SIDE;
-
-    public ChunkSectionUpdateData(boolean[] booleans, ChunkSectionPos sectionPos, PacketSide side) {
+    public ChunkSectionUpdateData(boolean[] booleans, ChunkSectionPos sectionPos) {
         this.sectionPos = sectionPos;
         this.values = booleans;
-        this.SIDE = side;
     }
 
-    public ChunkSectionUpdateData(PacketSide side) {
-        this.SIDE = side;
+    public ChunkSectionUpdateData() {
+
     }
 
     @Override
@@ -65,7 +62,7 @@ public class ChunkSectionUpdateData implements BaseData {
 
     @Override
     public PacketSide getSide() {
-        return SIDE;
+        return PacketSide.SERVER_TO_CLIENT;
     }
 
     @Override

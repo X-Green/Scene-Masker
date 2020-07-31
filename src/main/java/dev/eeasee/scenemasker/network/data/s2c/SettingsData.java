@@ -1,19 +1,22 @@
-package dev.eeasee.scenemasker.network.data.datas;
+package dev.eeasee.scenemasker.network.data.s2c;
 
 import dev.eeasee.scenemasker.network.data.BaseData;
 import dev.eeasee.scenemasker.network.data.DataType;
 import dev.eeasee.scenemasker.network.data.PacketSide;
 import net.minecraft.util.PacketByteBuf;
 
-public class DummyData implements BaseData {
+public class SettingsData implements BaseData {
+
+
+    private final DataType DATA_TYPE = DataType.SETTINGS;
+
     @Override
     public void apply() {
 
     }
 
     @Override
-    public void encode(PacketByteBuf packetByteBuf) {
-
+    public void encode(PacketByteBuf packetBuf) {
     }
 
     @Override
@@ -23,16 +26,17 @@ public class DummyData implements BaseData {
 
     @Override
     public DataType getDataType() {
-        return null;
+        return DataType.SETTINGS;
     }
 
     @Override
     public PacketSide getSide() {
-        return null;
+        return PacketSide.SERVER_TO_CLIENT;
     }
 
     @Override
     public boolean isValid() {
         return false;
     }
+
 }

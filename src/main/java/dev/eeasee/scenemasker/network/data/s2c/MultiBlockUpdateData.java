@@ -1,4 +1,4 @@
-package dev.eeasee.scenemasker.network.data.datas;
+package dev.eeasee.scenemasker.network.data.s2c;
 
 import com.google.common.collect.Sets;
 import dev.eeasee.scenemasker.network.data.BaseData;
@@ -15,17 +15,13 @@ public class MultiBlockUpdateData implements BaseData {
 
     private Set<BlockPos> blockPosSet;
 
-    private final PacketSide SIDE;
-
-
-    public MultiBlockUpdateData(Set<BlockPos> blockPosSet, boolean value, PacketSide side) {
+    public MultiBlockUpdateData(Set<BlockPos> blockPosSet, boolean value) {
         this.value = value;
         this.blockPosSet = blockPosSet;
-        this.SIDE = side;
     }
 
-    public MultiBlockUpdateData(PacketSide side) {
-        this.SIDE = side;
+    public MultiBlockUpdateData() {
+
     }
 
     @Override
@@ -61,7 +57,7 @@ public class MultiBlockUpdateData implements BaseData {
 
     @Override
     public PacketSide getSide() {
-        return SIDE;
+        return PacketSide.SERVER_TO_CLIENT;
     }
 
     @Override

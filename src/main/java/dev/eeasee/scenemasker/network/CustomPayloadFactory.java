@@ -4,16 +4,16 @@ import dev.eeasee.scenemasker.Masker;
 import dev.eeasee.scenemasker.network.data.BaseData;
 import dev.eeasee.scenemasker.network.data.DataType;
 import dev.eeasee.scenemasker.network.data.PacketSide;
-import dev.eeasee.scenemasker.network.data.datas.*;
+import dev.eeasee.scenemasker.network.data.s2c.*;
 import io.netty.buffer.Unpooled;
 import net.minecraft.network.packet.c2s.play.CustomPayloadC2SPacket;
 import net.minecraft.util.PacketByteBuf;
 
 public class CustomPayloadFactory {
 
-    public static void handle(PacketByteBuf packetByteBuf, PacketSide side) {
+    public static void handle(PacketByteBuf packetByteBuf) {
         DataType dataType = packetByteBuf.readEnumConstant(DataType.class);
-        BaseData data = newDataHandler(dataType, side);
+        BaseData data = newDataObject(dataType);
         data.decode(packetByteBuf);
         data.apply();
     }
@@ -28,14 +28,14 @@ public class CustomPayloadFactory {
         return new CustomPayloadC2SPacket(Masker.MASKER_CHANNEL, packetByteBuf);
     }
 
-    private static BaseData newDataHandler(DataType dataType, PacketSide side) {
+    private static BaseData newDataObject(DataType dataType) {
         switch (dataType) {
             case SETTINGS:
-                return new SettingsData(side);
+                return new SettingsData();
             case MULTI_BLOCK_UPDATE:
-                return new MultiBlockUpdateData(side);
+                return new MultiBlockUpdateData();
             case CHUNK_SECTION_UPDATE:
-                return new ChunkSectionUpdateData(side);
+                return new ChunkSectionUpdateData();
             default:
                 return new DummyData();
         }
