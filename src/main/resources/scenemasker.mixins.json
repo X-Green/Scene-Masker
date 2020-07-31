@@ -5,7 +5,6 @@
   "compatibilityLevel": "JAVA_8",
   "mixins": [
     "BlockEntityRenderDispatcherMixin",
-    "BlockStateMixin",
     "ClientPlayNetworkHandlerMixin",
     "CommandManagerMixin",
     "CustomPayloadC2SPacketMixin",

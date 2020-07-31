@@ -6,7 +6,7 @@ import net.minecraft.util.math.BlockPos;
 
 public class MaskerWorldUtils {
 
-    public boolean isBlockRenderedMasked(BlockPos blockPos, MaskedWorld maskedWorld, MaskProperties properties) {
+    public static boolean isBlockRenderedMasked(BlockPos blockPos, MaskedWorld maskedWorld, MaskProperties properties) {
         if (!properties.isApplied) {
             return false;
         }

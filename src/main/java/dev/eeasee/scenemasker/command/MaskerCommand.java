@@ -26,7 +26,7 @@ public class MaskerCommand {
                                 .suggests(((context, builder) -> suggestMatching(new String[]{"add", "remove"}, builder)))
                                 .then(argument("blockPos", BlockPosArgumentType.blockPos())
                                         .executes(MaskerCommand::operateBlockPos))))
-                .then(literal("visual"));
+                .then(literal("settings"));
 
         dispatcher.register(literalArgumentBuilder);
     }
