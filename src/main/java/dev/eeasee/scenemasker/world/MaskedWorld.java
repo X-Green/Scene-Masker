@@ -51,7 +51,7 @@ public class MaskedWorld {
 
     public void setSectionMasked(ChunkSectionPos sectionPos, boolean[] values) {
         if (values.length != 4096) {
-            Masker.LOGGER.warn("Unsupported section data for masker!");
+            Masker.LOGGER.error("Unsupported section data for masker!");
             return;
         }
         this.getMaskedChunkOrNew(sectionPos.toChunkPos()).setSection(values, sectionPos.getSectionY());
