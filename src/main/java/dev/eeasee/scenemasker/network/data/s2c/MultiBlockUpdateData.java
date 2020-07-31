@@ -1,7 +1,7 @@
 package dev.eeasee.scenemasker.network.data.s2c;
 
 import com.google.common.collect.Sets;
-import dev.eeasee.scenemasker.network.data.BaseData;
+import dev.eeasee.scenemasker.network.data.IData;
 import dev.eeasee.scenemasker.network.data.DataType;
 import dev.eeasee.scenemasker.network.data.PacketSide;
 import net.minecraft.util.PacketByteBuf;
@@ -9,7 +9,7 @@ import net.minecraft.util.math.BlockPos;
 
 import java.util.Set;
 
-public class MultiBlockUpdateData implements BaseData {
+public class MultiBlockUpdateData implements IData {
 
     private boolean value;
 

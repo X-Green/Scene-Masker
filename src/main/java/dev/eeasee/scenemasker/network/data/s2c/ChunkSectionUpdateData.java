@@ -1,7 +1,7 @@
 package dev.eeasee.scenemasker.network.data.s2c;
 
 import dev.eeasee.scenemasker.fakes.WorldInterface;
-import dev.eeasee.scenemasker.network.data.BaseData;
+import dev.eeasee.scenemasker.network.data.IData;
 import dev.eeasee.scenemasker.network.data.DataType;
 import dev.eeasee.scenemasker.network.data.PacketSide;
 import dev.eeasee.scenemasker.utils.Byte2Boolean;
@@ -11,7 +11,7 @@ import net.minecraft.util.PacketByteBuf;
 import net.minecraft.util.math.ChunkSectionPos;
 import net.minecraft.world.World;
 
-public class ChunkSectionUpdateData implements BaseData {
+public class ChunkSectionUpdateData implements IData {
 
     private ChunkSectionPos sectionPos;
 
