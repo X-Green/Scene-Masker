@@ -55,7 +55,13 @@ public class MaskedChunk {
     }
 
     public boolean isEmptyChunk() {
-        return false;
+        for (int i = 0; i < 4; i++) {
+            MaskedSection section = sections[i];
+            if (section != null && (!section.isAllFalse())) {
+                return false;
+            }
+        }
+        return true;
     }
 
     public ChunkPos getPos() {

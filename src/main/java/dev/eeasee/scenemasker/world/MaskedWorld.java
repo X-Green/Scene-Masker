@@ -33,12 +33,25 @@ public class MaskedWorld {
         return getMaskedChunkOrNew(new ChunkPos(blockPos));
     }
 
-    public boolean isChunkEmpty(ChunkPos chunkPos) {
+    public boolean containsChunk(ChunkPos chunkPos) {
         return chunkMap.containsKey(chunkPos);
     }
 
-    public boolean isChunkEmpty(BlockPos blockPos) {
-        return isChunkEmpty(new ChunkPos(blockPos));
+    public boolean containsChunk(BlockPos blockPos) {
+        return containsChunk(new ChunkPos(blockPos));
+    }
+
+    public void deleteChunkIfEmpty(ChunkPos chunkPos) {
+        if (this.containsChunk(chunkPos)) {
+            MaskedChunk chunk = this.chunkMap.get(chunkPos);
+            if (chunk.isEmptyChunk()) {
+                this.chunkMap.remove(chunkPos);
+            }
+        }
+    }
+
+    public void deleteChunk(ChunkPos chunkPos) {
+        this.chunkMap.remove(chunkPos);
     }
 
     public boolean isBlockMasked(BlockPos blockPos) {
@@ -55,5 +68,9 @@ public class MaskedWorld {
             return;
         }
         this.getMaskedChunkOrNew(sectionPos.toChunkPos()).setSection(values, sectionPos.getSectionY());
+    }
+
+    public void cleanEmptyChunks() {
+        chunkMap.keySet().forEach(this::deleteChunkIfEmpty);
     }
 }

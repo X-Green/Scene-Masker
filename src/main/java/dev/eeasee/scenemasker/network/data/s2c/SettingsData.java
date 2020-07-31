@@ -7,9 +7,6 @@ import net.minecraft.util.PacketByteBuf;
 
 public class SettingsData implements IData {
 
-
-    private final DataType DATA_TYPE = DataType.SETTINGS;
-
     @Override
     public void apply() {
 

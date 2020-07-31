@@ -1,11 +1,15 @@
 package dev.eeasee.scenemasker.network.data.s2c;
 
 import com.google.common.collect.Sets;
+import dev.eeasee.scenemasker.fakes.WorldInterface;
 import dev.eeasee.scenemasker.network.data.IData;
 import dev.eeasee.scenemasker.network.data.DataType;
 import dev.eeasee.scenemasker.network.data.PacketSide;
+import dev.eeasee.scenemasker.world.MaskedWorld;
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.util.PacketByteBuf;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
 
 import java.util.Set;
 
@@ -26,6 +30,15 @@ public class MultiBlockUpdateData implements IData {
 
     @Override
     public void apply() {
+        World world = MinecraftClient.getInstance().world;
+        if (world == null) {
+            return;
+        }
+        MaskedWorld maskedWorld = ((WorldInterface)world).getWorldMasker();
+        this.blockPosSet.forEach(blockPos -> {
+            maskedWorld.setBlockMasked(blockPos, value);
+        });
+        maskedWorld.cleanEmptyChunks();
     }
 
     @Override

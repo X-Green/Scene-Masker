@@ -34,6 +34,7 @@ public class ChunkSectionUpdateData implements IData {
         }
         MaskedWorld worldMasker = ((WorldInterface)world).getWorldMasker();
         worldMasker.setSectionMasked(this.sectionPos, this.values);
+        worldMasker.deleteChunkIfEmpty(this.sectionPos.toChunkPos());
     }
 
     @Override
