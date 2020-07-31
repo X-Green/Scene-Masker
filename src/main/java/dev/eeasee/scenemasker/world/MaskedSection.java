@@ -1,5 +1,6 @@
 package dev.eeasee.scenemasker.world;
 
+import dev.eeasee.scenemasker.Masker;
 import net.minecraft.util.math.BlockPos;
 
 import java.util.Set;
@@ -37,9 +38,9 @@ public class MaskedSection {
         booleans[index] = value;
     }
 
-    public void setBooleansArray(boolean[] booleans) throws Exception {
+    public void setBooleansArray(boolean[] booleans) {
         if (booleans.length != 4096) {
-            throw new Exception("Not a valid masked section boolean array!");
+            Masker.LOGGER.error("Unsupported section data for masker!");
         } else {
             System.arraycopy(booleans, 0, this.booleans, 0, 4096);
         }

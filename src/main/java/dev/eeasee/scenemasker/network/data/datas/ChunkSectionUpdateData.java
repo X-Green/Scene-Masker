@@ -1,11 +1,15 @@
 package dev.eeasee.scenemasker.network.data.datas;
 
+import dev.eeasee.scenemasker.fakes.WorldInterface;
 import dev.eeasee.scenemasker.network.data.BaseData;
 import dev.eeasee.scenemasker.network.data.DataType;
 import dev.eeasee.scenemasker.network.data.PacketSide;
 import dev.eeasee.scenemasker.utils.Byte2Boolean;
+import dev.eeasee.scenemasker.world.MaskedWorld;
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.util.PacketByteBuf;
 import net.minecraft.util.math.ChunkSectionPos;
+import net.minecraft.world.World;
 
 public class ChunkSectionUpdateData implements BaseData {
 
@@ -27,7 +31,12 @@ public class ChunkSectionUpdateData implements BaseData {
 
     @Override
     public void apply() {
-
+        World world = MinecraftClient.getInstance().world;
+        if (world == null) {
+            return;
+        }
+        MaskedWorld worldMasker = ((WorldInterface)world).getWorldMasker();
+        worldMasker.setSectionMasked(this.sectionPos, this.values);
     }
 
     @Override

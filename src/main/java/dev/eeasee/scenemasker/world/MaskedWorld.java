@@ -1,15 +1,15 @@
 package dev.eeasee.scenemasker.world;
 
 import com.google.common.collect.Maps;
+import dev.eeasee.scenemasker.Masker;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
+import net.minecraft.util.math.ChunkSectionPos;
 
 import java.util.Map;
 
 public class MaskedWorld {
     private Map<ChunkPos, MaskedChunk> chunkMap = Maps.newHashMap();
-
-
 
     private MaskedChunk getMaskedChunk(ChunkPos chunkPos) {
         return chunkMap.getOrDefault(chunkPos, MaskedChunk.EMPTY);
@@ -47,5 +47,13 @@ public class MaskedWorld {
 
     public void setBlockMasked(BlockPos blockPos, boolean value) {
         this.getMaskedChunkOrNew(blockPos).setMaskBooleanState(blockPos, value);
+    }
+
+    public void setSectionMasked(ChunkSectionPos sectionPos, boolean[] values) {
+        if (values.length != 4096) {
+            Masker.LOGGER.warn("Unsupported section data for masker!");
+            return;
+        }
+        this.getMaskedChunkOrNew(sectionPos.toChunkPos()).setSection(values, sectionPos.getSectionY());
     }
 }

@@ -44,6 +44,12 @@ public class MaskedChunk {
         return target;
     }
 
+    public void setSection(boolean[] values, int index) {
+        MaskedSection section = new MaskedSection();
+        section.setBooleansArray(values);
+        sections[index] = section;
+    }
+
     public boolean isSectionEmpty(int index) {
         return sections[index] == null;
     }
@@ -72,33 +78,45 @@ public class MaskedChunk {
             super(null);
         }
 
+        @Override
         public void setMaskBooleanState(BlockPos blockPos, boolean value) {
         }
 
+        @Override
         public boolean getMaskBooleanState(BlockPos blockPos) {
             return false;
         }
 
-        public MaskedSection getSection(int index) {
+        @Override
+        public MaskedSection getSectionOrEmpty(int index) {
             return MaskedSection.MASKED_EMPTY_SECTION;
         }
 
+        @Override
         public MaskedSection getOrCreateSection(int index) {
             return MaskedSection.MASKED_EMPTY_SECTION;
         }
 
+        @Override
+        public void setSection(boolean[] values, int index) {
+        }
+
+        @Override
         public boolean isSectionEmpty(int index) {
             return true;
         }
 
+        @Override
         public boolean isEmptyChunk() {
             return true;
         }
 
+        @Override
         public ChunkPos getPos() {
             return null;
         }
 
+        @Override
         public void clean() {
         }
 
