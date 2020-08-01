@@ -6,7 +6,7 @@ import net.minecraft.util.math.ChunkSectionPos;
 
 public class MaskedChunk {
     private final ChunkPos chunkPos;
-    private MaskedSection[] sections = new MaskedSection[4];
+    private MaskedSection[] sections = new MaskedSection[16];
     public final static MaskedChunk EMPTY = new EmptyMaskedChunk();
     private boolean changed = false;
 
@@ -15,7 +15,7 @@ public class MaskedChunk {
     }
 
     public void setMaskBooleanState(BlockPos blockPos, boolean value) {
-        int sectionIndex = blockPos.getY() >> 6;
+        int sectionIndex = blockPos.getY() >> 4;
         if ((value) || !this.isSectionEmpty(sectionIndex)) {
             this.getOrCreateSection(sectionIndex).setBoolean(blockPos, value);
         }
@@ -23,7 +23,7 @@ public class MaskedChunk {
     }
 
     public boolean getMaskBooleanState(BlockPos blockPos) {
-        int index = blockPos.getY() >> 6;
+        int index = blockPos.getY() >> 4;
         if (this.isSectionEmpty(index)) {
             return false;
         } else {
@@ -56,7 +56,7 @@ public class MaskedChunk {
     }
 
     public boolean isEmptyChunk() {
-        for (int i = 0; i < 4; i++) {
+        for (int i = 0; i < 16; i++) {
             MaskedSection section = sections[i];
             if (section != null && (!section.isAllFalse())) {
                 return false;
@@ -71,7 +71,7 @@ public class MaskedChunk {
 
     public void clean() {
         if (!changed) return;
-        for (int i = 0; i < 4; i++) {
+        for (int i = 0; i < 16; i++) {
             if (sections[i].isAllFalse()) {
                 sections[i] = null;
             }
