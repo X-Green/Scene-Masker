@@ -11,15 +11,15 @@ import java.util.Map;
 public class MaskedWorld {
     private Map<ChunkPos, MaskedChunk> chunkMap = Maps.newHashMap();
 
-    public MaskedChunk getMaskedChunkOrEmpty(ChunkPos chunkPos) {
+    MaskedChunk getMaskedChunkOrEmpty(ChunkPos chunkPos) {
         return chunkMap.getOrDefault(chunkPos, MaskedChunk.EMPTY);
     }
 
-    public MaskedChunk getMaskedChunkOrEmpty(BlockPos blockPos) {
+    MaskedChunk getMaskedChunkOrEmpty(BlockPos blockPos) {
         return getMaskedChunkOrEmpty(new ChunkPos(blockPos));
     }
 
-    public MaskedChunk getMaskedChunkOrNew(ChunkPos chunkPos) {
+    MaskedChunk getMaskedChunkOrNew(ChunkPos chunkPos) {
         if (chunkMap.containsKey(chunkPos)) {
             return chunkMap.get(chunkPos);
         } else {
@@ -29,11 +29,11 @@ public class MaskedWorld {
         }
     }
 
-    public MaskedSection getSectionOrEmpty(ChunkSectionPos sectionPos) {
+    MaskedSection getSectionOrEmpty(ChunkSectionPos sectionPos) {
         return getMaskedChunkOrEmpty(sectionPos.toChunkPos()).getSectionOrEmpty(sectionPos.getSectionY());
     }
 
-    public MaskedChunk getMaskedChunkOrNew(BlockPos blockPos) {
+    MaskedChunk getMaskedChunkOrNew(BlockPos blockPos) {
         return getMaskedChunkOrNew(new ChunkPos(blockPos));
     }
 
@@ -54,7 +54,7 @@ public class MaskedWorld {
         }
     }
 
-    public void deleteChunk(ChunkPos chunkPos) {
+    void deleteChunk(ChunkPos chunkPos) {
         this.chunkMap.remove(chunkPos);
     }
 

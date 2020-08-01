@@ -12,7 +12,7 @@ public class MaskedSection {
     public final static MaskedSection MASKED_EMPTY_SECTION = new MaskedEmptySection();
     private final ChunkSectionPos sectionPos;
 
-    public MaskedSection(ChunkSectionPos sectionPos) {
+    MaskedSection(ChunkSectionPos sectionPos) {
         this.sectionPos = sectionPos;
     }
 
