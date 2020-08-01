@@ -5,6 +5,7 @@ import dev.eeasee.scenemasker.network.data.IData;
 import dev.eeasee.scenemasker.network.data.DataType;
 import dev.eeasee.scenemasker.network.data.PacketSide;
 import dev.eeasee.scenemasker.utils.Byte2Boolean;
+import dev.eeasee.scenemasker.world.MaskedSection;
 import dev.eeasee.scenemasker.world.MaskedWorld;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.util.PacketByteBuf;
@@ -24,6 +25,11 @@ public class ChunkSectionUpdateData implements IData {
 
     public ChunkSectionUpdateData() {
 
+    }
+
+    public ChunkSectionUpdateData(MaskedWorld maskedWorld, ChunkSectionPos chunkSectionPos) {
+        this.values = maskedWorld.getSectionOrEmpty(chunkSectionPos).getBooleansArray();
+        this.sectionPos = chunkSectionPos;
     }
 
     @Override

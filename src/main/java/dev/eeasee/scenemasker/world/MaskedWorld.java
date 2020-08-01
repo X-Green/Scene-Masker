@@ -11,15 +11,15 @@ import java.util.Map;
 public class MaskedWorld {
     private Map<ChunkPos, MaskedChunk> chunkMap = Maps.newHashMap();
 
-    private MaskedChunk getMaskedChunk(ChunkPos chunkPos) {
+    public MaskedChunk getMaskedChunkOrEmpty(ChunkPos chunkPos) {
         return chunkMap.getOrDefault(chunkPos, MaskedChunk.EMPTY);
     }
 
-    private MaskedChunk getMaskedChunk(BlockPos blockPos) {
-        return getMaskedChunk(new ChunkPos(blockPos));
+    public MaskedChunk getMaskedChunkOrEmpty(BlockPos blockPos) {
+        return getMaskedChunkOrEmpty(new ChunkPos(blockPos));
     }
 
-    private MaskedChunk getMaskedChunkOrNew(ChunkPos chunkPos) {
+    public MaskedChunk getMaskedChunkOrNew(ChunkPos chunkPos) {
         if (chunkMap.containsKey(chunkPos)) {
             return chunkMap.get(chunkPos);
         } else {
@@ -29,7 +29,11 @@ public class MaskedWorld {
         }
     }
 
-    private MaskedChunk getMaskedChunkOrNew(BlockPos blockPos) {
+    public MaskedSection getSectionOrEmpty(ChunkSectionPos sectionPos) {
+        return getMaskedChunkOrEmpty(sectionPos.toChunkPos()).getSectionOrEmpty(sectionPos.getSectionY());
+    }
+
+    public MaskedChunk getMaskedChunkOrNew(BlockPos blockPos) {
         return getMaskedChunkOrNew(new ChunkPos(blockPos));
     }
 
@@ -55,7 +59,7 @@ public class MaskedWorld {
     }
 
     public boolean isBlockMasked(BlockPos blockPos) {
-        return this.getMaskedChunk(blockPos).getMaskBooleanState(blockPos);
+        return this.getMaskedChunkOrEmpty(blockPos).getMaskBooleanState(blockPos);
     }
 
     public void setBlockMasked(BlockPos blockPos, boolean value) {
