@@ -15,7 +15,7 @@ public class MaskedChunk {
     }
 
     public void setMaskBooleanState(BlockPos blockPos, boolean value) {
-        int sectionIndex = blockPos.getY() >> 4;
+        int sectionIndex = blockPos.getY() >> 6;
         if ((value) || !this.isSectionEmpty(sectionIndex)) {
             this.getOrCreateSection(sectionIndex).setBoolean(blockPos, value);
         }
@@ -23,7 +23,7 @@ public class MaskedChunk {
     }
 
     public boolean getMaskBooleanState(BlockPos blockPos) {
-        int index = blockPos.getY() >> 4;
+        int index = blockPos.getY() >> 6;
         if (this.isSectionEmpty(index)) {
             return false;
         } else {
