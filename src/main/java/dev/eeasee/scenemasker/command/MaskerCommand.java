@@ -6,9 +6,11 @@ import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import dev.eeasee.scenemasker.Masker;
+import dev.eeasee.scenemasker.fakes.ServerWorldInterface;
 import dev.eeasee.scenemasker.fakes.WorldInterface;
 import net.minecraft.command.arguments.BlockPosArgumentType;
 import net.minecraft.server.command.ServerCommandSource;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
@@ -32,19 +34,24 @@ public class MaskerCommand {
     }
 
     private static int operateBlockPos(CommandContext<ServerCommandSource> serverCommandSourceCommandContext) throws CommandSyntaxException {
-        String operation = StringArgumentType.getString(serverCommandSourceCommandContext, "operation");
-        BlockPos blockPos = BlockPosArgumentType.getBlockPos(serverCommandSourceCommandContext, "blockPos");
-        World world = serverCommandSourceCommandContext.getSource().getWorld();
-        switch (operation) {
-            case "add": {
-                ((WorldInterface)world).getWorldMasker().setBlockMasked(blockPos, true);
+        try {
+            String operation = StringArgumentType.getString(serverCommandSourceCommandContext, "operation");
+            BlockPos blockPos = BlockPosArgumentType.getBlockPos(serverCommandSourceCommandContext, "blockPos");
+            ServerWorld world = serverCommandSourceCommandContext.getSource().getWorld();
+            switch (operation) {
+                case "add": {
+                    ((WorldInterface) world).getWorldMasker().setBlockMasked(blockPos, true);
+                }
+                case "remove": {
+                    ((WorldInterface) world).getWorldMasker().setBlockMasked(blockPos, true);
+                }
             }
-            case "remove": {
-                ((WorldInterface)world).getWorldMasker().setBlockMasked(blockPos, true);
-            }
+            System.out.println(operation);
+            System.out.println(blockPos);
+            ((ServerWorldInterface) world).sendMaskedWorldChangeToAllPlayers();
+        } catch (CommandSyntaxException e) {
+            e.printStackTrace();
         }
-        System.out.println(operation);
-        System.out.println(blockPos);
         return 1;
     }
 
