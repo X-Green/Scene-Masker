@@ -22,7 +22,6 @@ public abstract class ClientPlayNetworkHandlerMixin {
     private void onOnCustomPayload(CustomPayloadS2CPacket packet, CallbackInfo ci) {
         if (Masker.MASKER_CHANNEL.equals(packet.getChannel())) {
             ClientNetworkHandler.handleData(packet.getData(), client.player);
-            ci.cancel();
         }
     }
 

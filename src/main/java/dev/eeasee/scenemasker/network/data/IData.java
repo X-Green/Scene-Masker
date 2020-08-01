@@ -1,9 +1,11 @@
 package dev.eeasee.scenemasker.network.data;
 
+import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.util.PacketByteBuf;
+import net.minecraft.world.World;
 
 public interface IData {
-    void apply();
+    void apply(ClientPlayerEntity playerEntity);
 
     void encode(PacketByteBuf packetByteBuf);
 

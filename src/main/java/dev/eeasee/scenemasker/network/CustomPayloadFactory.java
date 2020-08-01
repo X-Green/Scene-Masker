@@ -5,17 +5,18 @@ import dev.eeasee.scenemasker.network.data.IData;
 import dev.eeasee.scenemasker.network.data.DataType;
 import dev.eeasee.scenemasker.network.data.s2c.*;
 import io.netty.buffer.Unpooled;
+import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.network.packet.c2s.play.CustomPayloadC2SPacket;
 import net.minecraft.network.packet.s2c.play.CustomPayloadS2CPacket;
 import net.minecraft.util.PacketByteBuf;
 
 public class CustomPayloadFactory {
 
-    public static void handle(PacketByteBuf packetByteBuf) {
+    public static void handle(PacketByteBuf packetByteBuf, ClientPlayerEntity clientPlayerEntity) {
         DataType dataType = packetByteBuf.readEnumConstant(DataType.class);
         IData data = getDataObject(dataType);
         data.decode(packetByteBuf);
-        data.apply();
+        data.apply(clientPlayerEntity);
     }
 
     public static CustomPayloadS2CPacket create(IData data) {

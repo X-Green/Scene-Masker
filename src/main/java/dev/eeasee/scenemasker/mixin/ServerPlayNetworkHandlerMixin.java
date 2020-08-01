@@ -23,7 +23,6 @@ public abstract class ServerPlayNetworkHandlerMixin {
         Identifier channel = ((CustomPayloadC2SPacketInterface) packet).getPacketChannel();
         if (Masker.MASKER_CHANNEL.equals(channel)) {
             ServerNetworkHandler.handleData(((CustomPayloadC2SPacketInterface) packet).getPacketData(), player);
-            ci.cancel();
         }
     }
 }

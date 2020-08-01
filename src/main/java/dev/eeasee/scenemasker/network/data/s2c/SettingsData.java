@@ -6,6 +6,7 @@ import dev.eeasee.scenemasker.network.data.DataType;
 import dev.eeasee.scenemasker.network.data.PacketSide;
 import dev.eeasee.scenemasker.utils.MaskProperties;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.util.PacketByteBuf;
 
 public class SettingsData implements IData {
@@ -21,10 +22,8 @@ public class SettingsData implements IData {
     }
 
     @Override
-    public void apply() {
-        if (MinecraftClient.getInstance().world != null) {
-            ((WorldInterface) MinecraftClient.getInstance().world).getMaskProperties().copy(this.properties);
-        }
+    public void apply(ClientPlayerEntity clientPlayerEntity) {
+        ((WorldInterface)clientPlayerEntity.clientWorld).getMaskProperties().copy(this.properties);
     }
 
     @Override

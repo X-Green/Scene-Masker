@@ -7,6 +7,8 @@ import dev.eeasee.scenemasker.network.data.DataType;
 import dev.eeasee.scenemasker.network.data.PacketSide;
 import dev.eeasee.scenemasker.world.MaskedWorld;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.network.ClientPlayerEntity;
+import net.minecraft.client.world.ClientWorld;
 import net.minecraft.util.PacketByteBuf;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -29,11 +31,8 @@ public class MultiBlockUpdateData implements IData {
     }
 
     @Override
-    public void apply() {
-        World world = MinecraftClient.getInstance().world;
-        if (world == null) {
-            return;
-        }
+    public void apply(ClientPlayerEntity clientPlayerEntity) {
+        ClientWorld world = clientPlayerEntity.clientWorld;
         MaskedWorld maskedWorld = ((WorldInterface)world).getWorldMasker();
         this.blockPosSet.forEach(blockPos -> {
             maskedWorld.setBlockMasked(blockPos, value);

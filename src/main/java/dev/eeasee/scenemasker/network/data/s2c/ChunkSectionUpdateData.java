@@ -8,6 +8,8 @@ import dev.eeasee.scenemasker.utils.Byte2Boolean;
 import dev.eeasee.scenemasker.world.MaskedSection;
 import dev.eeasee.scenemasker.world.MaskedWorld;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.network.ClientPlayerEntity;
+import net.minecraft.client.world.ClientWorld;
 import net.minecraft.util.PacketByteBuf;
 import net.minecraft.util.math.ChunkSectionPos;
 import net.minecraft.world.World;
@@ -33,11 +35,8 @@ public class ChunkSectionUpdateData implements IData {
     }
 
     @Override
-    public void apply() {
-        World world = MinecraftClient.getInstance().world;
-        if (world == null) {
-            return;
-        }
+    public void apply(ClientPlayerEntity clientPlayerEntity) {
+        ClientWorld world = clientPlayerEntity.clientWorld;
         MaskedWorld worldMasker = ((WorldInterface)world).getWorldMasker();
         worldMasker.setSectionMasked(this.sectionPos, this.values);
         worldMasker.deleteChunkIfEmpty(this.sectionPos.toChunkPos());
