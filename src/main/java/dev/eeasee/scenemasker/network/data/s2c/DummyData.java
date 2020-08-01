@@ -3,11 +3,13 @@ package dev.eeasee.scenemasker.network.data.s2c;
 import dev.eeasee.scenemasker.network.data.IData;
 import dev.eeasee.scenemasker.network.data.DataType;
 import dev.eeasee.scenemasker.network.data.PacketSide;
+import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.util.PacketByteBuf;
 
 public class DummyData implements IData {
+
     @Override
-    public void apply() {
+    public void apply(ClientPlayerEntity playerEntity) {
 
     }
 

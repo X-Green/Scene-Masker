@@ -13,6 +13,7 @@
     "MinecraftClientMixin",
     "MinecraftServerMixin",
     "ServerPlayNetworkHandlerMixin",
+    "ServerWorldMixin",
     "WorldMixin"
   ],
   "client": [

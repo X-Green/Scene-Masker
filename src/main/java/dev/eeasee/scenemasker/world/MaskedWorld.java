@@ -88,9 +88,8 @@ public class MaskedWorld {
         chunkMap.keySet().forEach(this::deleteChunkIfEmpty);
     }
 
-    public void flushChunkChangeSet(Consumer<ChunkPos> consumer) {
-        changeSet.forEach(consumer);
-        changeSet.clear();
+    public Set<ChunkPos> getChangeSet() {
+        return this.changeSet;
     }
 
     public ChunkSectionUpdateData createChunkSectionUpdateData(ChunkSectionPos sectionPos) {
