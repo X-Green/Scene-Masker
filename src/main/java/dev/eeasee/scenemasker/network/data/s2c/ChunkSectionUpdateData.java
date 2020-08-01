@@ -27,9 +27,9 @@ public class ChunkSectionUpdateData implements IData {
 
     }
 
-    public ChunkSectionUpdateData(MaskedWorld maskedWorld, ChunkSectionPos chunkSectionPos) {
-        this.values = maskedWorld.getSectionOrEmpty(chunkSectionPos).getBooleansArray();
-        this.sectionPos = chunkSectionPos;
+    public ChunkSectionUpdateData(MaskedSection section){
+        this.sectionPos = section.getSectionPos();
+        this.values = section.getBooleansArrayCopied();
     }
 
     @Override

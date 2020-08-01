@@ -2,24 +2,28 @@ package dev.eeasee.scenemasker.world;
 
 import dev.eeasee.scenemasker.Masker;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.ChunkSectionPos;
+import net.minecraft.world.chunk.Chunk;
 
 import java.util.Set;
 
 public class MaskedSection {
     private boolean[] booleans = new boolean[4096];
     public final static MaskedSection MASKED_EMPTY_SECTION = new MaskedEmptySection();
+    private final ChunkSectionPos sectionPos;
 
-    public MaskedSection() {
-
+    public MaskedSection(ChunkSectionPos sectionPos) {
+        this.sectionPos = sectionPos;
     }
 
-    public MaskedSection(Set<BlockPos> blockPosSet) {
+    public MaskedSection(Set<BlockPos> blockPosSet, ChunkSectionPos sectionPos) {
         blockPosSet.forEach((blockPos -> {
             int x = blockPos.getX() & 15;
             int y = blockPos.getY() & 15;
             int z = blockPos.getZ() & 15;
             booleans[(x << 8) + (y << 4) + z] = true;
         }));
+        this.sectionPos = sectionPos;
     }
 
     public void setBoolean(BlockPos blockPos, boolean value) {
@@ -62,7 +66,7 @@ public class MaskedSection {
         return booleans[index];
     }
 
-    public boolean[] getBooleansArray() {
+    public boolean[] getBooleansArrayCopied() {
         boolean[] target = new boolean[4096];
         System.arraycopy(this.booleans, 0, target, 0, 4096);
         return target;
@@ -76,8 +80,13 @@ public class MaskedSection {
         return !flag;
     }
 
+    public ChunkSectionPos getSectionPos() {
+        return this.sectionPos;
+    }
+
     private static class MaskedEmptySection extends MaskedSection {
         MaskedEmptySection() {
+            super(null);
         }
 
         @Override
@@ -121,7 +130,7 @@ public class MaskedSection {
         }
 
         @Override
-        public boolean[] getBooleansArray() {
+        public boolean[] getBooleansArrayCopied() {
             return new boolean[4096];
         }
 
@@ -130,6 +139,10 @@ public class MaskedSection {
             return true;
         }
 
+        @Override
+        public ChunkSectionPos getSectionPos() {
+            return null;
+        }
 
     }
 }

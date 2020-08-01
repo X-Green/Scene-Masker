@@ -2,6 +2,7 @@ package dev.eeasee.scenemasker.world;
 
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
+import net.minecraft.util.math.ChunkSectionPos;
 
 public class MaskedChunk {
     private final ChunkPos chunkPos;
@@ -38,14 +39,14 @@ public class MaskedChunk {
     public MaskedSection getOrCreateSection(int index) {
         MaskedSection target = sections[index];
         if (target == null) {
-            target = new MaskedSection();
+            target = new MaskedSection(ChunkSectionPos.from(this.chunkPos.x, index, this.chunkPos.z));
             sections[index] = target;
         }
         return target;
     }
 
     public void setSection(boolean[] values, int index) {
-        MaskedSection section = new MaskedSection();
+        MaskedSection section = new MaskedSection(ChunkSectionPos.from(this.chunkPos.x, index, this.chunkPos.z));
         section.setBooleansArray(values);
         sections[index] = section;
     }
