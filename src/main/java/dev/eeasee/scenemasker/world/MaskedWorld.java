@@ -1,15 +1,20 @@
 package dev.eeasee.scenemasker.world;
 
 import com.google.common.collect.Maps;
+import com.google.common.collect.Sets;
 import dev.eeasee.scenemasker.Masker;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.math.ChunkSectionPos;
 
 import java.util.Map;
+import java.util.Set;
+import java.util.function.Consumer;
 
 public class MaskedWorld {
     private Map<ChunkPos, MaskedChunk> chunkMap = Maps.newHashMap();
+
+    private Set<ChunkPos> changeSet = Sets.newHashSet();
 
     MaskedChunk getMaskedChunkOrEmpty(ChunkPos chunkPos) {
         return chunkMap.getOrDefault(chunkPos, MaskedChunk.EMPTY);
@@ -49,13 +54,14 @@ public class MaskedWorld {
         if (this.containsChunk(chunkPos)) {
             MaskedChunk chunk = this.chunkMap.get(chunkPos);
             if (chunk.isEmptyChunk()) {
-                this.chunkMap.remove(chunkPos);
+                deleteChunk(chunkPos);
             }
         }
     }
 
     void deleteChunk(ChunkPos chunkPos) {
         this.chunkMap.remove(chunkPos);
+        this.changeSet.add(chunkPos);
     }
 
     public boolean isBlockMasked(BlockPos blockPos) {
@@ -64,6 +70,7 @@ public class MaskedWorld {
 
     public void setBlockMasked(BlockPos blockPos, boolean value) {
         this.getMaskedChunkOrNew(blockPos).setMaskBooleanState(blockPos, value);
+        this.changeSet.add(new ChunkPos(blockPos));
     }
 
     public void setSectionMasked(ChunkSectionPos sectionPos, boolean[] values) {
@@ -72,9 +79,15 @@ public class MaskedWorld {
             return;
         }
         this.getMaskedChunkOrNew(sectionPos.toChunkPos()).setSection(values, sectionPos.getSectionY());
+        this.changeSet.add(sectionPos.toChunkPos());
     }
 
     public void cleanEmptyChunks() {
         chunkMap.keySet().forEach(this::deleteChunkIfEmpty);
+    }
+
+    public void flushChunkChangeSet(Consumer<ChunkPos> consumer) {
+        changeSet.forEach(consumer);
+        changeSet.clear();
     }
 }

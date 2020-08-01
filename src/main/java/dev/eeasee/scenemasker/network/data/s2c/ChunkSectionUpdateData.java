@@ -48,8 +48,13 @@ public class ChunkSectionUpdateData implements IData {
         packetByteBuf.writeInt(sectionPos.getSectionX());
         packetByteBuf.writeInt(sectionPos.getSectionY());
         packetByteBuf.writeInt(sectionPos.getSectionZ());
-        byte[] bytes = Byte2Boolean.convertToByteArray(this.values);
-        packetByteBuf.writeByteArray(bytes);
+        if (isBooleansAllFalse(this.values)) {
+            packetByteBuf.writeBoolean(false);
+        } else {
+            packetByteBuf.writeBoolean(true);
+            byte[] bytes = Byte2Boolean.convertToByteArray(this.values);
+            packetByteBuf.writeByteArray(bytes);
+        }
     }
 
     @Override
@@ -58,8 +63,12 @@ public class ChunkSectionUpdateData implements IData {
         int y = packetByteBuf.readInt();
         int z = packetByteBuf.readInt();
         this.sectionPos = ChunkSectionPos.from(x, y, z);
-        byte[] bytes = packetByteBuf.readByteArray();
-        this.values = Byte2Boolean.convertToBooleanArray(bytes);
+        if (packetByteBuf.readBoolean()) {
+            byte[] bytes = packetByteBuf.readByteArray();
+            this.values = Byte2Boolean.convertToBooleanArray(bytes);
+        } else {
+            this.values = new boolean[4096];
+        }
     }
 
     @Override
@@ -75,5 +84,13 @@ public class ChunkSectionUpdateData implements IData {
     @Override
     public boolean isValid() {
         return (sectionPos != null) && (values != null);
+    }
+
+    private static boolean isBooleansAllFalse(boolean[] bools) {
+        boolean hasTrue = false;
+        for (boolean bool : bools) {
+            hasTrue |= bool;
+        }
+        return hasTrue;
     }
 }
