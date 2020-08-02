@@ -1,4 +1,4 @@
-package dev.eeasee.scenemasker.network;
+package dev.eeasee.scenemasker.network_old;
 
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.util.PacketByteBuf;

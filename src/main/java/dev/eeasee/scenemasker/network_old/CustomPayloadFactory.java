@@ -1,12 +1,11 @@
-package dev.eeasee.scenemasker.network;
+package dev.eeasee.scenemasker.network_old;
 
 import dev.eeasee.scenemasker.Masker;
-import dev.eeasee.scenemasker.network.data.IData;
-import dev.eeasee.scenemasker.network.data.DataType;
-import dev.eeasee.scenemasker.network.data.s2c.*;
+import dev.eeasee.scenemasker.network_old.data.IData;
+import dev.eeasee.scenemasker.network_old.data.DataType;
+import dev.eeasee.scenemasker.network_old.data.s2c.*;
 import io.netty.buffer.Unpooled;
 import net.minecraft.client.network.ClientPlayerEntity;
-import net.minecraft.network.packet.c2s.play.CustomPayloadC2SPacket;
 import net.minecraft.network.packet.s2c.play.CustomPayloadS2CPacket;
 import net.minecraft.util.PacketByteBuf;
 

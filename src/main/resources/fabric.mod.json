@@ -15,7 +15,7 @@
   "environment": "*",
   "entrypoints": {
     "main": [
-      "dev.eeasee.scenemasker.events.OnInit"
+      "dev.eeasee.scenemasker.Masker"
     ]
   },
   "mixins": [

@@ -2,7 +2,7 @@ package dev.eeasee.scenemasker.mixin;
 
 import dev.eeasee.scenemasker.fakes.CustomPayloadC2SPacketInterface;
 import dev.eeasee.scenemasker.Masker;
-import dev.eeasee.scenemasker.network.ServerNetworkHandler;
+import dev.eeasee.scenemasker.network_old.ServerNetworkHandler;
 import net.minecraft.network.packet.c2s.play.CustomPayloadC2SPacket;
 import net.minecraft.server.network.ServerPlayNetworkHandler;
 import net.minecraft.server.network.ServerPlayerEntity;

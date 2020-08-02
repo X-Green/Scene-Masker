@@ -1,8 +1,7 @@
-package dev.eeasee.scenemasker.network.data;
+package dev.eeasee.scenemasker.network_old.data;
 
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.util.PacketByteBuf;
-import net.minecraft.world.World;
 
 public interface IData {
     void apply(ClientPlayerEntity playerEntity);

@@ -1,4 +1,4 @@
-package dev.eeasee.scenemasker.network.data;
+package dev.eeasee.scenemasker.network_old.data;
 
 public enum DataType {
     MULTI_BLOCK_UPDATE,

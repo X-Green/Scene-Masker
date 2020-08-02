@@ -3,15 +3,13 @@ package dev.eeasee.scenemasker.world;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import dev.eeasee.scenemasker.Masker;
-import dev.eeasee.scenemasker.network.data.s2c.ChunkSectionUpdateData;
-import net.minecraft.server.network.ServerPlayNetworkHandler;
+import dev.eeasee.scenemasker.network_old.data.s2c.ChunkSectionUpdateData;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.math.ChunkSectionPos;
 
 import java.util.Map;
 import java.util.Set;
-import java.util.function.Consumer;
 
 public class MaskedWorld {
     private Map<ChunkPos, MaskedChunk> chunkMap = Maps.newHashMap();

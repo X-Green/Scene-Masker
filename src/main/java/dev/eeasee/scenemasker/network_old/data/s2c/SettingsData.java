@@ -1,11 +1,10 @@
-package dev.eeasee.scenemasker.network.data.s2c;
+package dev.eeasee.scenemasker.network_old.data.s2c;
 
 import dev.eeasee.scenemasker.fakes.WorldInterface;
-import dev.eeasee.scenemasker.network.data.IData;
-import dev.eeasee.scenemasker.network.data.DataType;
-import dev.eeasee.scenemasker.network.data.PacketSide;
+import dev.eeasee.scenemasker.network_old.data.IData;
+import dev.eeasee.scenemasker.network_old.data.DataType;
+import dev.eeasee.scenemasker.network_old.data.PacketSide;
 import dev.eeasee.scenemasker.utils.MaskProperties;
-import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.util.PacketByteBuf;
 
