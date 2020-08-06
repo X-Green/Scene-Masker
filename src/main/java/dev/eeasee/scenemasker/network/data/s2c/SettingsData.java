@@ -1,14 +1,12 @@
-package dev.eeasee.scenemasker.network_old.data.s2c;
+package dev.eeasee.scenemasker.network.data.s2c;
 
 import dev.eeasee.scenemasker.fakes.WorldInterface;
-import dev.eeasee.scenemasker.network_old.data.IData;
-import dev.eeasee.scenemasker.network_old.data.DataType;
-import dev.eeasee.scenemasker.network_old.data.PacketSide;
 import dev.eeasee.scenemasker.utils.MaskProperties;
+import io.netty.buffer.Unpooled;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.util.PacketByteBuf;
 
-public class SettingsData implements IData {
+public class SettingsData implements IDataS2C {
 
     private final MaskProperties properties;
 
@@ -26,28 +24,15 @@ public class SettingsData implements IData {
     }
 
     @Override
-    public void encode(PacketByteBuf packetBuf) {
+    public PacketByteBuf encode() {
+        PacketByteBuf packetBuf = new PacketByteBuf(Unpooled.buffer());
         this.properties.flush(packetBuf);
+        return packetBuf;
     }
 
     @Override
     public void decode(PacketByteBuf packetByteBuf) {
         this.properties.read(packetByteBuf);
-    }
-
-    @Override
-    public DataType getDataType() {
-        return DataType.SETTINGS;
-    }
-
-    @Override
-    public PacketSide getSide() {
-        return PacketSide.SERVER_TO_CLIENT;
-    }
-
-    @Override
-    public boolean isValid() {
-        return true;
     }
 
 }

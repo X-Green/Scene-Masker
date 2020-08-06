@@ -1,18 +1,16 @@
-package dev.eeasee.scenemasker.network_old.data.s2c;
+package dev.eeasee.scenemasker.network.data.s2c;
 
 import dev.eeasee.scenemasker.fakes.WorldInterface;
-import dev.eeasee.scenemasker.network_old.data.IData;
-import dev.eeasee.scenemasker.network_old.data.DataType;
-import dev.eeasee.scenemasker.network_old.data.PacketSide;
 import dev.eeasee.scenemasker.utils.Byte2Boolean;
 import dev.eeasee.scenemasker.world.MaskedSection;
 import dev.eeasee.scenemasker.world.MaskedWorld;
+import io.netty.buffer.Unpooled;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.util.PacketByteBuf;
 import net.minecraft.util.math.ChunkSectionPos;
 
-public class ChunkSectionUpdateData implements IData {
+public class ChunkSectionUpdateData implements IDataS2C {
 
     private ChunkSectionPos sectionPos;
 
@@ -41,7 +39,8 @@ public class ChunkSectionUpdateData implements IData {
     }
 
     @Override
-    public void encode(PacketByteBuf packetByteBuf) {
+    public PacketByteBuf encode() {
+        PacketByteBuf packetByteBuf = new PacketByteBuf(Unpooled.buffer());
         packetByteBuf.writeInt(sectionPos.getSectionX());
         packetByteBuf.writeInt(sectionPos.getSectionY());
         packetByteBuf.writeInt(sectionPos.getSectionZ());
@@ -52,6 +51,7 @@ public class ChunkSectionUpdateData implements IData {
             byte[] bytes = Byte2Boolean.convertToByteArray(this.values);
             packetByteBuf.writeByteArray(bytes);
         }
+        return packetByteBuf;
     }
 
     @Override
@@ -66,21 +66,6 @@ public class ChunkSectionUpdateData implements IData {
         } else {
             this.values = new boolean[4096];
         }
-    }
-
-    @Override
-    public DataType getDataType() {
-        return DataType.CHUNK_SECTION_UPDATE;
-    }
-
-    @Override
-    public PacketSide getSide() {
-        return PacketSide.SERVER_TO_CLIENT;
-    }
-
-    @Override
-    public boolean isValid() {
-        return (sectionPos != null) && (values != null);
     }
 
     private static boolean isBooleansAllFalse(boolean[] bools) {

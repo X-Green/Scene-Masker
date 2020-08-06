@@ -16,6 +16,9 @@
   "entrypoints": {
     "main": [
       "dev.eeasee.scenemasker.Masker"
+    ],
+    "client": [
+      "dev.eeasee.scenemasker.client.MaskerClientInit"
     ]
   },
   "mixins": [

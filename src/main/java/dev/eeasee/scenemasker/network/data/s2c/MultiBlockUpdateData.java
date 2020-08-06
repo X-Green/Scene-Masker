@@ -1,11 +1,9 @@
-package dev.eeasee.scenemasker.network_old.data.s2c;
+package dev.eeasee.scenemasker.network.data.s2c;
 
 import com.google.common.collect.Sets;
 import dev.eeasee.scenemasker.fakes.WorldInterface;
-import dev.eeasee.scenemasker.network_old.data.IData;
-import dev.eeasee.scenemasker.network_old.data.DataType;
-import dev.eeasee.scenemasker.network_old.data.PacketSide;
 import dev.eeasee.scenemasker.world.MaskedWorld;
+import io.netty.buffer.Unpooled;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.util.PacketByteBuf;
@@ -13,7 +11,7 @@ import net.minecraft.util.math.BlockPos;
 
 import java.util.Set;
 
-public class MultiBlockUpdateData implements IData {
+public class MultiBlockUpdateData implements IDataS2C {
 
     private boolean value;
 
@@ -39,10 +37,12 @@ public class MultiBlockUpdateData implements IData {
     }
 
     @Override
-    public void encode(PacketByteBuf packetBuf) {
+    public PacketByteBuf encode() {
+        PacketByteBuf packetBuf = new PacketByteBuf(Unpooled.buffer());
         packetBuf.writeBoolean(value);
         packetBuf.writeInt(blockPosSet.size());
         blockPosSet.forEach((packetBuf::writeBlockPos));
+        return packetBuf;
     }
 
     @Override
@@ -58,21 +58,6 @@ public class MultiBlockUpdateData implements IData {
 
         this.value = value;
         this.blockPosSet = blockPosSet1;
-    }
-
-    @Override
-    public DataType getDataType() {
-        return DataType.MULTI_BLOCK_UPDATE;
-    }
-
-    @Override
-    public PacketSide getSide() {
-        return PacketSide.SERVER_TO_CLIENT;
-    }
-
-    @Override
-    public boolean isValid() {
-        return this.blockPosSet != null;
     }
 
 }
