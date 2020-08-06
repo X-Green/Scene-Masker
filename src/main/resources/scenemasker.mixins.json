@@ -6,13 +6,6 @@
   "mixins": [
     "BlockEntityRenderDispatcherMixin",
     "ChunkRenderRegionMixin",
-    "ClientPlayNetworkHandlerMixin",
-    "CommandManagerMixin",
-    "CustomPayloadC2SPacketMixin",
-    "IntegratedServerMixin",
-    "MinecraftClientMixin",
-    "MinecraftServerMixin",
-    "ServerPlayNetworkHandlerMixin",
     "ServerWorldMixin",
     "WorldMixin"
   ],

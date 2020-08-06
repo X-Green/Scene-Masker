@@ -20,6 +20,4 @@ public class ServerNetworkCustomHandler {
         Stream<PlayerEntity> watchingPlayers = PlayerStream.watching(world,pos);
         watchingPlayers.forEach(playerEntity -> sendToPlayer(playerEntity, ID, data));
     }
-
-
 }

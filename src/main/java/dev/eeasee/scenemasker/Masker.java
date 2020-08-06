@@ -1,6 +1,8 @@
 package dev.eeasee.scenemasker;
 
+import dev.eeasee.scenemasker.command.MaskerCommand;
 import net.fabricmc.api.ModInitializer;
+import net.fabricmc.fabric.api.command.v1.CommandRegistrationCallback;
 import net.minecraft.util.Identifier;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -14,25 +16,10 @@ public class Masker implements ModInitializer {
     @Override
     public void onInitialize() {
         LOGGER.info("Scene masker launched! Made by eeasee");
-    }
-    public static void onServerStarted() {
-    }
-
-    public static void onServerClosed() {
+        registerCommands();
     }
 
-    public static void onServerTicked() {
+    private void registerCommands() {
+        CommandRegistrationCallback.EVENT.register(((dispatcher, dedicated) -> MaskerCommand.register(dispatcher)));
     }
-
-    public static void onConnectedToServer() {
-        LOGGER.debug("CStart");
-    }
-
-    public static void onDisconnectedToServer() {
-        LOGGER.debug("CClose");
-    }
-
-    public static void onClientTicked() {
-    }
-
 }

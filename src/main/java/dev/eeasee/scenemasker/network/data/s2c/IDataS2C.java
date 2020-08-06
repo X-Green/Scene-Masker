@@ -12,10 +12,10 @@ public interface IDataS2C {
 
     void decode(PacketByteBuf packetByteBuf);
 
-    static void consume(PacketContext context, PacketByteBuf buffer, IDataS2C emptyData) {
-        emptyData.decode(buffer);
+    static void consume(PacketContext context, PacketByteBuf buffer, IDataS2C data) {
+        data.decode(buffer);
         if (context.getPacketEnvironment() == EnvType.CLIENT) {
-            context.getTaskQueue().execute(() -> emptyData.apply((ClientPlayerEntity) context.getPlayer()));
+            context.getTaskQueue().execute(() -> data.apply((ClientPlayerEntity) context.getPlayer()));
         }
     }
 }
