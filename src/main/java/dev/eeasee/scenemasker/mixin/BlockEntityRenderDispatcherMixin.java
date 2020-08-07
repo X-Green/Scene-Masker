@@ -1,7 +1,7 @@
 package dev.eeasee.scenemasker.mixin;
 
 import dev.eeasee.scenemasker.fakes.WorldInterface;
-import dev.eeasee.scenemasker.utils.MaskProperties;
+import dev.eeasee.scenemasker.client.MaskProperties;
 import dev.eeasee.scenemasker.utils.MaskerWorldUtils;
 import dev.eeasee.scenemasker.world.MaskedWorld;
 import net.minecraft.block.entity.BlockEntity;
@@ -14,7 +14,6 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(BlockEntityRenderDispatcher.class)
@@ -32,7 +31,7 @@ public abstract class BlockEntityRenderDispatcherMixin {
         WorldInterface worldInterface = (WorldInterface) blockEntity.getWorld();
         MaskedWorld worldMasker = worldInterface.getWorldMasker();
         MaskProperties maskProperties = worldInterface.getMaskProperties();
-        if (MaskerWorldUtils.isBlockRenderedMasked(blockEntity.getPos(), worldMasker, maskProperties)) {
+        if (MaskerWorldUtils.isBlockRenderedMasked_OLD(blockEntity.getPos(), worldMasker, maskProperties)) {
             ci.cancel();
         }
     }

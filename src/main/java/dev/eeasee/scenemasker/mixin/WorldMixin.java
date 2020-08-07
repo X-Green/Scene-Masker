@@ -1,7 +1,7 @@
 package dev.eeasee.scenemasker.mixin;
 
 import dev.eeasee.scenemasker.fakes.WorldInterface;
-import dev.eeasee.scenemasker.utils.MaskProperties;
+import dev.eeasee.scenemasker.client.MaskProperties;
 import dev.eeasee.scenemasker.world.MaskedWorld;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.World;

@@ -1,38 +1,46 @@
 package dev.eeasee.scenemasker.network.data.s2c;
 
-import dev.eeasee.scenemasker.fakes.WorldInterface;
-import dev.eeasee.scenemasker.utils.MaskProperties;
+import dev.eeasee.scenemasker.client.MaskProperties;
 import io.netty.buffer.Unpooled;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.util.PacketByteBuf;
 
 public class SettingsData implements IDataS2C {
 
-    private final MaskProperties properties;
+    private String name;
+    private String value;
 
-    public SettingsData(MaskProperties properties) {
-        this.properties = properties;
-    }
-
-    public SettingsData() {
-        this.properties = new MaskProperties();
+    public SettingsData(String name, String value) {
+        this.name = name;
+        this.value = value;
     }
 
     @Override
     public void apply(ClientPlayerEntity clientPlayerEntity) {
-        ((WorldInterface)clientPlayerEntity.clientWorld).getMaskProperties().copy(this.properties);
+        switch (name) {
+            case "isApplied":
+                MaskProperties.isApplied = Boolean.getBoolean(value);
+            case "isLayered":
+                MaskProperties.isLayered = Boolean.getBoolean(value);
+            case "isReverted":
+                MaskProperties.isReverted = Boolean.getBoolean(value);
+            case "appliedLayer":
+                MaskProperties.appliedLayer = Integer.getInteger(value);
+        }
     }
 
     @Override
     public PacketByteBuf encode() {
-        PacketByteBuf packetBuf = new PacketByteBuf(Unpooled.buffer());
-        this.properties.flush(packetBuf);
-        return packetBuf;
+        PacketByteBuf packetByteBuf = new PacketByteBuf(Unpooled.buffer());
+        packetByteBuf.writeString(name);
+        packetByteBuf.writeString(value);
+        return packetByteBuf;
     }
 
     @Override
     public void decode(PacketByteBuf packetByteBuf) {
-        this.properties.read(packetByteBuf);
+        this.name = packetByteBuf.readString();
+        this.value = packetByteBuf.readString();
     }
 
 }

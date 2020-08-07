@@ -9,9 +9,10 @@ public abstract class ChunkSectionMixin implements ChunkSectionInterface {
 
     private boolean[] maskedBlocks = new boolean[4096];
     private int nonFalseMaskerCount = 0;
+    private boolean isChanged = false;
 
     @Override
-    public boolean getMaskerState(int x, int y, int z) {
+    public boolean getMaskerStateRaw(int x, int y, int z) {
         int index = z | y << 4 | x << 8;
         return maskedBlocks[index];
     }
@@ -26,12 +27,14 @@ public abstract class ChunkSectionMixin implements ChunkSectionInterface {
                 if (maskedBlocks[index] == false) {
                     maskedBlocks[index] = true;
                     nonFalseMaskerCount++;
+                    isChanged = true;
                 }
             }
         } else {
             if (maskedBlocks != null && maskedBlocks[index] == true) {
                 maskedBlocks[index] = false;
                 nonFalseMaskerCount--;
+                isChanged = true;
             }
         }
     }
@@ -58,12 +61,23 @@ public abstract class ChunkSectionMixin implements ChunkSectionInterface {
             }
             System.arraycopy(booleans, 0, maskedBlocks, 0, 4096);
         }
+        isChanged = true;
     }
 
     @Override
     public void setMaskerStatesEmpty() {
         this.nonFalseMaskerCount = 0;
         this.maskedBlocks = null;
+    }
+
+    @Override
+    public boolean isChanged() {
+        return this.isChanged;
+    }
+
+    @Override
+    public void resetChanged() {
+        this.isChanged = false;
     }
 
     private static int countTrues(boolean[] booleans) {

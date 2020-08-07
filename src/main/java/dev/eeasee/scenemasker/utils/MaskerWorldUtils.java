@@ -1,29 +1,24 @@
 package dev.eeasee.scenemasker.utils;
 
-import dev.eeasee.scenemasker.fakes.WorldInterface;
-import dev.eeasee.scenemasker.world.MaskedWorld;
+import dev.eeasee.scenemasker.client.MaskProperties;
+import dev.eeasee.scenemasker.fakes.ChunkSectionInterface;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
+import net.minecraft.world.chunk.WorldChunk;
 
 public class MaskerWorldUtils {
 
     public final static BlockState AIR_BLOCK_STATE = Blocks.AIR.getDefaultState();
 
-    public static boolean isBlockRenderedMasked(BlockPos blockPos, MaskedWorld maskedWorld, MaskProperties properties) {
-        if (!properties.isApplied) {
+    public static boolean shouldBlockRender(BlockPos blockPos, WorldChunk chunk) {
+        if (!MaskProperties.isApplied) {
             return false;
         }
-        if (properties.isLayered && blockPos.getY() != properties.appliedLayer) {
+        if (MaskProperties.isLayered && blockPos.getY() != MaskProperties.appliedLayer) {
             return false;
         }
-        boolean flag = maskedWorld.isBlockMasked(blockPos);
-        return (properties.isReverted != flag);
-    }
-
-    public static boolean isBlockRenderedMasked(BlockPos blockPos, World world) {
-        WorldInterface worldInterface = (WorldInterface)world;
-        return isBlockRenderedMasked(blockPos, worldInterface.getWorldMasker(), worldInterface.getMaskProperties());
+        boolean flag = ((ChunkSectionInterface)chunk.getSectionArray()[blockPos.getY() << 4]).getMaskerState(blockPos);
+        return (MaskProperties.isReverted != flag);
     }
 }
