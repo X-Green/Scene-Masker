@@ -9,4 +9,6 @@ public interface ChunkSectionInterface {
 
     void setMaskerStates(boolean[] booleans);
 
+    void setMaskerStatesEmpty();
+
 }
