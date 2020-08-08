@@ -1,6 +1,5 @@
 package dev.eeasee.scenemasker.mixin;
 
-import dev.eeasee.scenemasker.fakes.ServerWorldInterface;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.profiler.Profiler;
@@ -16,7 +15,7 @@ import org.spongepowered.asm.mixin.Shadow;
 import java.util.function.BiFunction;
 
 @Mixin(ServerWorld.class)
-public abstract class ServerWorldMixin extends World implements ServerWorldInterface {
+public abstract class ServerWorldMixin extends World {
     protected ServerWorldMixin(LevelProperties levelProperties, DimensionType dimensionType, BiFunction<World, Dimension, ChunkManager> chunkManagerProvider, Profiler profiler, boolean isClient) {
         super(levelProperties, dimensionType, chunkManagerProvider, profiler, isClient);
     }
