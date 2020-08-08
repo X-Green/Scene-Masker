@@ -1,6 +1,5 @@
 package dev.eeasee.scenemasker.network.data.s2c;
 
-import dev.eeasee.scenemasker.fakes.WorldInterface;
 import dev.eeasee.scenemasker.utils.Byte2Boolean;
 import dev.eeasee.scenemasker.world.MaskedSection;
 import dev.eeasee.scenemasker.world.MaskedWorld;

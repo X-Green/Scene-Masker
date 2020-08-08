@@ -4,6 +4,8 @@ import dev.eeasee.scenemasker.fakes.ChunkSectionInterface;
 import net.minecraft.world.chunk.ChunkSection;
 import org.spongepowered.asm.mixin.Mixin;
 
+import static dev.eeasee.scenemasker.utils.BooleanUtils.countTrues;
+
 @Mixin(ChunkSection.class)
 public abstract class ChunkSectionMixin implements ChunkSectionInterface {
 
@@ -80,16 +82,4 @@ public abstract class ChunkSectionMixin implements ChunkSectionInterface {
         this.isChanged = false;
     }
 
-    private static int countTrues(boolean[] booleans) {
-        if (booleans == null) {
-            return 0;
-        }
-        int t = 0;
-        for (int i = 0; i < 4096; i++) {
-            if (booleans[i]) {
-                t++;
-            }
-        }
-        return t;
-    }
 }

@@ -1,7 +1,6 @@
 package dev.eeasee.scenemasker.network.data.s2c;
 
 import com.google.common.collect.Sets;
-import dev.eeasee.scenemasker.fakes.WorldInterface;
 import dev.eeasee.scenemasker.world.MaskedWorld;
 import io.netty.buffer.Unpooled;
 import net.minecraft.client.network.ClientPlayerEntity;
