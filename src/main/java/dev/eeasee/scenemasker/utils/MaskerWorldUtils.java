@@ -22,4 +22,16 @@ public class MaskerWorldUtils {
         WorldChunk chunk = world.getWorldChunk(blockPos);
         return shouldHideBlock(blockPos, chunk);
     }
+
+    public static void setBlockMaskerState(World world, BlockPos pos, boolean value) {
+
+    }
+
+    public static void revertBlockMaskerState(World world, BlockPos pos) {
+
+    }
+
+    public static boolean getBlockMaskerState(World world, BlockPos pos) {
+
+    }
 }

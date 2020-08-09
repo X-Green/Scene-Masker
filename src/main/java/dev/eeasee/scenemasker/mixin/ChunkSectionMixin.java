@@ -1,49 +1,82 @@
 package dev.eeasee.scenemasker.mixin;
 
 import dev.eeasee.scenemasker.fakes.ChunkSectionInterface;
+import dev.eeasee.scenemasker.utils.BooleanUtils;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.chunk.ChunkSection;
 import org.spongepowered.asm.mixin.Mixin;
 
-import static dev.eeasee.scenemasker.utils.BooleanUtils.countTrues;
-
 @Mixin(ChunkSection.class)
-public abstract class ChunkSectionMixin implements ChunkSectionInterface {
+public class ChunkSectionMixin implements ChunkSectionInterface {
 
     private boolean[] maskedBlocks = new boolean[4096];
-    private int nonFalseMaskerCount = 0;
-    private boolean isChanged = false;
+    private boolean isMaskerChanged = false;
+
+    private boolean getMaskerStateRawIndex(int index) {
+        return (maskedBlocks == null) ? false : maskedBlocks[index];
+    }
+
+    private void setMaskerStateRawIndex(int index, boolean value, boolean check) {
+        if (check && (value == false) && (maskedBlocks == null)) {
+            return;
+        } else {
+            if (maskedBlocks == null) {
+                maskedBlocks = new boolean[4096];
+                isMaskerChanged |= value;
+            } else {
+                isMaskerChanged |= (maskedBlocks[index] == value);
+            }
+            maskedBlocks[index] = value;
+        }
+        if (check && (!BooleanUtils.or(maskedBlocks))) {
+            maskedBlocks = null;
+        }
+    }
 
     @Override
-    public boolean getMaskerStateRaw(int x, int y, int z) {
+    public boolean getMaskerStateRawXYZ(int x, int y, int z) {
         int index = z | y << 4 | x << 8;
-        return maskedBlocks[index];
+        return getMaskerStateRawIndex(index);
+    }
+
+    @Override
+    public boolean getMaskerState(int x, int y, int z) {
+        int index = (z & 15) | (y & 15) << 4 | (x & 15) << 8;
+        return getMaskerStateRawIndex(index);
+    }
+
+    @Override
+    public boolean getMaskerState(BlockPos blockPos) {
+        return getMaskerState(blockPos.getX(), blockPos.getY(), blockPos.getZ());
+    }
+
+    @Override
+    public void setMaskerStateRawXYZ(int x, int y, int z, boolean value, boolean check) {
+        setMaskerStateRawIndex((z) | (y << 4) | (x << 8), value, check);
+    }
+
+    @Override
+    public void setMaskerState(int x, int y, int z, boolean value, boolean check) {
+        setMaskerStateRawIndex((z & 15) | (y & 15) << 4 | (x & 15) << 8, value, check);
     }
 
     @Override
     public void setMaskerState(int x, int y, int z, boolean value) {
-        int index = z | y << 4 | x << 8;
-        if (value == true) {
-            if (maskedBlocks == null) {
-                maskedBlocks = new boolean[4096];
-            } else {
-                if (maskedBlocks[index] == false) {
-                    maskedBlocks[index] = true;
-                    nonFalseMaskerCount++;
-                    isChanged = true;
-                }
-            }
-        } else {
-            if (maskedBlocks != null && maskedBlocks[index] == true) {
-                maskedBlocks[index] = false;
-                nonFalseMaskerCount--;
-                isChanged = true;
+        setMaskerState(x, y, z, value, true);
+    }
+
+    @Override
+    public void doCheck() {
+        if (maskedBlocks != null) {
+            if (! BooleanUtils.or(maskedBlocks)) {
+                maskedBlocks = null;
             }
         }
     }
 
     @Override
     public boolean[] getMaskerStatesArrayCopied() {
-        if (nonFalseMaskerCount == 0) {
+        if (!BooleanUtils.or(this.maskedBlocks)) {
             return null;
         } else {
             boolean[] booleans = new boolean[4096];
@@ -54,8 +87,7 @@ public abstract class ChunkSectionMixin implements ChunkSectionInterface {
 
     @Override
     public void setMaskerStates(boolean[] booleans) {
-        this.nonFalseMaskerCount = countTrues(booleans);
-        if (this.nonFalseMaskerCount == 0) {
+        if (!BooleanUtils.or(booleans)) {
             maskedBlocks = null;
         } else {
             if (maskedBlocks == null) {
@@ -63,23 +95,22 @@ public abstract class ChunkSectionMixin implements ChunkSectionInterface {
             }
             System.arraycopy(booleans, 0, maskedBlocks, 0, 4096);
         }
-        isChanged = true;
+        isMaskerChanged = true;
     }
 
     @Override
     public void setMaskerStatesEmpty() {
-        this.nonFalseMaskerCount = 0;
         this.maskedBlocks = null;
     }
 
     @Override
-    public boolean isChanged() {
-        return this.isChanged;
+    public boolean isMaskerChanged() {
+        return this.isMaskerChanged;
     }
 
     @Override
-    public void resetChanged() {
-        this.isChanged = false;
+    public void resetMaskerChanged() {
+        this.isMaskerChanged = false;
     }
 
 }

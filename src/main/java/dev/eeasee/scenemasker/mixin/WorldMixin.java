@@ -1,7 +1,5 @@
 package dev.eeasee.scenemasker.mixin;
 
-import dev.eeasee.scenemasker.client.MaskProperties;
-import dev.eeasee.scenemasker.world.MaskedWorld;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.Mixin;

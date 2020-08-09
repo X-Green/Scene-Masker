@@ -13,4 +13,12 @@ public class BooleanUtils {
         }
         return t;
     }
+
+    public static boolean and(boolean[] booleans) {
+        return org.apache.commons.lang3.BooleanUtils.and(booleans);
+    }
+
+    public static boolean or(boolean[] booleans) {
+        return org.apache.commons.lang3.BooleanUtils.or(booleans);
+    }
 }

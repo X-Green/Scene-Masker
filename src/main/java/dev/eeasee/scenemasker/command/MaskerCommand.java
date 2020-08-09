@@ -5,14 +5,17 @@ import com.mojang.brigadier.arguments.BoolArgumentType;
 import com.mojang.brigadier.arguments.IntegerArgumentType;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.mojang.brigadier.context.CommandContext;
+import com.mojang.brigadier.exceptions.CommandSyntaxException;
+import net.minecraft.block.Block;
 import net.minecraft.command.arguments.BlockPosArgumentType;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
+import static dev.eeasee.scenemasker.utils.MaskerWorldUtils.revertBlockMaskerState;
+import static dev.eeasee.scenemasker.utils.MaskerWorldUtils.setBlockMaskerState;
 import static net.minecraft.server.command.CommandManager.argument;
 import static net.minecraft.server.command.CommandManager.literal;
-import static net.minecraft.server.command.CommandSource.suggestMatching;
 
 public class MaskerCommand {
     public static void register(CommandDispatcher<ServerCommandSource> dispatcher) {
@@ -47,7 +50,11 @@ public class MaskerCommand {
         dispatcher.register(literalArgumentBuilder);
     }
 
-    private static int setSingleBlockCommand(CommandContext<ServerCommandSource> serverCommandSourceCommandContext) {
+    private static int setSingleBlockCommand(CommandContext<ServerCommandSource> serverCommandSourceCommandContext) throws CommandSyntaxException {
+        World world = serverCommandSourceCommandContext.getSource().getWorld();
+        boolean value = BoolArgumentType.getBool(serverCommandSourceCommandContext, "value");
+        BlockPos pos = BlockPosArgumentType.getBlockPos(serverCommandSourceCommandContext, "pos");
+        setBlockMaskerState(world, pos, value);
         return 1;
     }
 
@@ -55,7 +62,10 @@ public class MaskerCommand {
         return 1;
     }
 
-    private static int revertSingleBlockCommand(CommandContext<ServerCommandSource> serverCommandSourceCommandContext) {
+    private static int revertSingleBlockCommand(CommandContext<ServerCommandSource> serverCommandSourceCommandContext) throws CommandSyntaxException {
+        World world = serverCommandSourceCommandContext.getSource().getWorld();
+        BlockPos pos = BlockPosArgumentType.getBlockPos(serverCommandSourceCommandContext, "pos");
+        revertBlockMaskerState(world, pos);
         return 1;
     }
 
@@ -80,16 +90,8 @@ public class MaskerCommand {
     }
 
     //Utils below
-    public static void setBlockMaskerState(World world, BlockPos pos, boolean value) {
-    }
-
-    public static boolean getBlockMaskerState(World world, BlockPos pos) {
-    }
-
     public static void setRangedBlocksMaskerState(World world, BlockPos pos1, BlockPos pos2, boolean value) {
-    }
 
-    public static void revertBlockMaskerState(World world, BlockPos pos) {
     }
 
 }

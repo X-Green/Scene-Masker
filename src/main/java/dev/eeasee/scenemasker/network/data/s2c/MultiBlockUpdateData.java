@@ -1,24 +1,21 @@
 package dev.eeasee.scenemasker.network.data.s2c;
 
-import com.google.common.collect.Sets;
-import dev.eeasee.scenemasker.world.MaskedWorld;
+import dev.eeasee.scenemasker.utils.MaskerWorldUtils;
 import io.netty.buffer.Unpooled;
 import net.minecraft.client.network.ClientPlayerEntity;
-import net.minecraft.client.world.ClientWorld;
 import net.minecraft.util.PacketByteBuf;
 import net.minecraft.util.math.BlockPos;
-
-import java.util.Set;
+import net.minecraft.world.World;
 
 public class MultiBlockUpdateData implements IDataS2C {
 
-    private boolean value;
+    private BlockPos[] stateTruePoses;
 
-    private Set<BlockPos> blockPosSet;
+    private BlockPos[] stateFalsePoses;
 
-    public MultiBlockUpdateData(Set<BlockPos> blockPosSet, boolean value) {
-        this.value = value;
-        this.blockPosSet = blockPosSet;
+    public MultiBlockUpdateData(BlockPos[] stateTruePoses, BlockPos[] stateFalsePoses) {
+        this.stateTruePoses = stateTruePoses;
+        this.stateFalsePoses = stateFalsePoses;
     }
 
     public MultiBlockUpdateData() {
@@ -27,36 +24,56 @@ public class MultiBlockUpdateData implements IDataS2C {
 
     @Override
     public void apply(ClientPlayerEntity clientPlayerEntity) {
-        ClientWorld world = clientPlayerEntity.clientWorld;
-        MaskedWorld maskedWorld = ((WorldInterface)world).getWorldMasker();
-        this.blockPosSet.forEach(blockPos -> {
-            maskedWorld.setBlockMasked(blockPos, value);
-        });
-        maskedWorld.cleanEmptyChunks();
+        World world = clientPlayerEntity.clientWorld;
+        if (stateTruePoses != null) {
+            for (BlockPos posTrue : stateTruePoses) {
+                MaskerWorldUtils.setBlockMaskerState(world, posTrue, true);
+            }
+        }
+        if (stateFalsePoses != null) {
+            for (BlockPos posFalse : stateFalsePoses) {
+                MaskerWorldUtils.setBlockMaskerState(world, posFalse, false);
+            }
+        }
     }
 
     @Override
     public PacketByteBuf encode() {
         PacketByteBuf packetBuf = new PacketByteBuf(Unpooled.buffer());
-        packetBuf.writeBoolean(value);
-        packetBuf.writeInt(blockPosSet.size());
-        blockPosSet.forEach((packetBuf::writeBlockPos));
+        if (stateTruePoses != null && stateTruePoses.length != 0) {
+            packetBuf.writeBoolean(true);
+            packetBuf.writeBoolean(true);
+            packetBuf.writeInt(stateTruePoses.length);
+            for (BlockPos posTrue : stateTruePoses) {
+                packetBuf.writeBlockPos(posTrue);
+            }
+        }
+        if (stateFalsePoses != null && stateFalsePoses.length != 0) {
+            packetBuf.writeBoolean(true);
+            packetBuf.writeBoolean(false);
+            packetBuf.writeInt(stateFalsePoses.length);
+            for (BlockPos posFalse : stateFalsePoses) {
+                packetBuf.writeBlockPos(posFalse);
+            }
+        }
+        packetBuf.writeBoolean(false);
         return packetBuf;
     }
 
     @Override
     public void decode(PacketByteBuf packetByteBuf) {
-        boolean value = packetByteBuf.readBoolean();
-        int size = packetByteBuf.readInt();
-        Set<BlockPos> blockPosSet1 = Sets.newHashSet();
-        for (int i = 0; i < size; i++) {
-            blockPosSet1.add(
-                    packetByteBuf.readBlockPos()
-            );
+        while (packetByteBuf.readBoolean()) {
+            boolean posState = packetByteBuf.readBoolean();
+            int length = packetByteBuf.readInt();
+            BlockPos[] poses = new BlockPos[length];
+            for (int i = 0; i < length; i++) {
+                poses[i] = packetByteBuf.readBlockPos();
+            }
+            if (posState) {
+                this.stateTruePoses = poses;
+            } else {
+                this.stateFalsePoses = poses;
+            }
         }
-
-        this.value = value;
-        this.blockPosSet = blockPosSet1;
     }
-
 }

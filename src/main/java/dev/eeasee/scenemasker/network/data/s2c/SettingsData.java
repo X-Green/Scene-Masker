@@ -10,6 +10,9 @@ public class SettingsData implements IDataS2C {
     private String name;
     private String value;
 
+    public SettingsData() {
+    }
+
     public SettingsData(String name, String value) {
         this.name = name;
         this.value = value;

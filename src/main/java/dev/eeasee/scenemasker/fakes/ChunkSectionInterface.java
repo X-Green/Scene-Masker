@@ -3,13 +3,19 @@ package dev.eeasee.scenemasker.fakes;
 import net.minecraft.util.math.BlockPos;
 
 public interface ChunkSectionInterface {
-    boolean getMaskerStateRaw(int x, int y, int z);
+    boolean getMaskerStateRawXYZ(int x, int y, int z);
 
     boolean getMaskerState(int x, int y, int z);
 
     boolean getMaskerState(BlockPos blockPos);
 
+    void setMaskerStateRawXYZ(int x, int y, int z, boolean value, boolean check);
+
+    void setMaskerState(int x, int y, int z, boolean value, boolean check);
+
     void setMaskerState(int x, int y, int z, boolean value);
+
+    void doCheck();
 
     boolean[] getMaskerStatesArrayCopied();
 
@@ -17,8 +23,8 @@ public interface ChunkSectionInterface {
 
     void setMaskerStatesEmpty();
 
-    boolean isChanged();
+    boolean isMaskerChanged();
 
-    void resetChanged();
+    void resetMaskerChanged();
 
 }
