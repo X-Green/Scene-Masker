@@ -6,14 +6,13 @@ import com.mojang.brigadier.arguments.IntegerArgumentType;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
-import net.minecraft.block.Block;
+import dev.eeasee.scenemasker.utils.MaskerWorldUtils;
 import net.minecraft.command.arguments.BlockPosArgumentType;
 import net.minecraft.server.command.ServerCommandSource;
+import net.minecraft.util.math.BlockBox;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-import static dev.eeasee.scenemasker.utils.MaskerWorldUtils.revertBlockMaskerState;
-import static dev.eeasee.scenemasker.utils.MaskerWorldUtils.setBlockMaskerState;
 import static net.minecraft.server.command.CommandManager.argument;
 import static net.minecraft.server.command.CommandManager.literal;
 
@@ -26,13 +25,13 @@ public class MaskerCommand {
                         .executes(MaskerCommand::settingsMenu)
                         .then(literal("layer")
                                 .then(argument("layer applied", IntegerArgumentType.integer(-1, 255))
-                                .executes(MaskerCommand::changeDisplayLayerCommand)))
+                                        .executes(MaskerCommand::changeDisplayLayerCommand)))
                         .then(literal("swap")
                                 .executes(MaskerCommand::swapRenderType)))
                 .then(literal("revert")
                         .then(argument("from", BlockPosArgumentType.blockPos())
                                 .then(argument("to", BlockPosArgumentType.blockPos())
-                                        .executes(MaskerCommand::revertRangedBlocksCommand)))
+                                        .executes(MaskerCommand::revertBoxedBlocksCommand)))
                         .then(literal("block")
                                 .then(argument("pos", BlockPosArgumentType.blockPos())
                                         .executes(MaskerCommand::revertSingleBlockCommand))))
@@ -40,7 +39,7 @@ public class MaskerCommand {
                         .then(argument("value", BoolArgumentType.bool()))
                         .then(argument("from", BlockPosArgumentType.blockPos())
                                 .then(argument("to", BlockPosArgumentType.blockPos())
-                                        .executes(MaskerCommand::setRangedBlocks)))
+                                        .executes(MaskerCommand::setBoxedBlocks)))
                         .then(literal("block")
                                 .then(argument("pos", BlockPosArgumentType.blockPos())
                                         .executes(MaskerCommand::setSingleBlockCommand)
@@ -54,22 +53,31 @@ public class MaskerCommand {
         World world = serverCommandSourceCommandContext.getSource().getWorld();
         boolean value = BoolArgumentType.getBool(serverCommandSourceCommandContext, "value");
         BlockPos pos = BlockPosArgumentType.getBlockPos(serverCommandSourceCommandContext, "pos");
-        setBlockMaskerState(world, pos, value);
+        MaskerWorldUtils.setBlockMaskerState(world, pos, value);
         return 1;
     }
 
-    private static int setRangedBlocks(CommandContext<ServerCommandSource> serverCommandSourceCommandContext) {
+    private static int setBoxedBlocks(CommandContext<ServerCommandSource> serverCommandSourceCommandContext) throws CommandSyntaxException {
+        World world = serverCommandSourceCommandContext.getSource().getWorld();
+        boolean value = BoolArgumentType.getBool(serverCommandSourceCommandContext, "value");
+        BlockPos pos1 = BlockPosArgumentType.getBlockPos(serverCommandSourceCommandContext, "from");
+        BlockPos pos2 = BlockPosArgumentType.getBlockPos(serverCommandSourceCommandContext, "to");
+        MaskerWorldUtils.setBoxedBlockMaskerStates(world, new BlockBox(pos1, pos2), value);
         return 1;
     }
 
     private static int revertSingleBlockCommand(CommandContext<ServerCommandSource> serverCommandSourceCommandContext) throws CommandSyntaxException {
         World world = serverCommandSourceCommandContext.getSource().getWorld();
         BlockPos pos = BlockPosArgumentType.getBlockPos(serverCommandSourceCommandContext, "pos");
-        revertBlockMaskerState(world, pos);
+        MaskerWorldUtils.revertBlockMaskerState(world, pos);
         return 1;
     }
 
-    private static int revertRangedBlocksCommand(CommandContext<ServerCommandSource> serverCommandSourceCommandContext) {
+    private static int revertBoxedBlocksCommand(CommandContext<ServerCommandSource> serverCommandSourceCommandContext) throws CommandSyntaxException {
+        World world = serverCommandSourceCommandContext.getSource().getWorld();
+        BlockPos pos1 = BlockPosArgumentType.getBlockPos(serverCommandSourceCommandContext, "from");
+        BlockPos pos2 = BlockPosArgumentType.getBlockPos(serverCommandSourceCommandContext, "to");
+        MaskerWorldUtils.revertBoxedBlockMaskerStates(world, new BlockBox(pos1, pos2));
         return 1;
     }
 
@@ -87,11 +95,6 @@ public class MaskerCommand {
 
     private static int mainMenu(CommandContext<ServerCommandSource> serverCommandSourceCommandContext) {
         return 1;
-    }
-
-    //Utils below
-    public static void setRangedBlocksMaskerState(World world, BlockPos pos1, BlockPos pos2, boolean value) {
-
     }
 
 }

@@ -21,4 +21,20 @@ public class BooleanUtils {
     public static boolean or(boolean[] booleans) {
         return org.apache.commons.lang3.BooleanUtils.or(booleans);
     }
+
+    public static void doNot(boolean[] booleans) {
+        int length = booleans.length;
+        for (int i = 0; i < length; i++) {
+            booleans[i] = ! booleans[i];
+        }
+    }
+
+    public static boolean[] getNot(boolean[] booleans) {
+        int length = booleans.length;
+        boolean[] newBooleans = new boolean[length];
+        for (int i = 0; i < length; i++) {
+            newBooleans[i] = ! booleans[i];
+        }
+        return newBooleans;
+    }
 }

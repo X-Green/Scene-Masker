@@ -68,7 +68,7 @@ public class ChunkSectionMixin implements ChunkSectionInterface {
     @Override
     public void doCheck() {
         if (maskedBlocks != null) {
-            if (! BooleanUtils.or(maskedBlocks)) {
+            if (!BooleanUtils.or(maskedBlocks)) {
                 maskedBlocks = null;
             }
         }
@@ -87,7 +87,7 @@ public class ChunkSectionMixin implements ChunkSectionInterface {
 
     @Override
     public void setMaskerStates(boolean[] booleans) {
-        if (!BooleanUtils.or(booleans)) {
+        if (booleans == null || !BooleanUtils.or(booleans)) {
             maskedBlocks = null;
         } else {
             if (maskedBlocks == null) {
