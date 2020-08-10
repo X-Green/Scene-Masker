@@ -1,5 +1,6 @@
 package dev.eeasee.scenemasker.utils;
 
+import carpet.script.Fluff;
 import com.google.common.collect.Lists;
 import net.minecraft.util.math.BlockBox;
 import net.minecraft.util.math.Box;
@@ -56,6 +57,15 @@ public class BoxUtils {
         );
     }
 
+    public static boolean insides(BlockBox inner, BlockBox outer) {
+        return (inner.minX >= outer.minX) &&
+                (inner.minY >= outer.minY) &&
+                (inner.minZ >= outer.minZ) &&
+                (inner.maxX <= outer.maxX) &&
+                (inner.maxY <= outer.maxY) &&
+                (inner.maxZ <= outer.minZ);
+    }
+
     public static BlockBox intersection(BlockBox box1, BlockBox box2) {
         int d = Math.max(box1.minX, box2.minX);
         int e = Math.max(box1.minY, box2.minY);
@@ -89,14 +99,21 @@ public class BoxUtils {
         return boxes;
     }
 
-    public static void consumeAsDividedBoxes(BlockBox blockBox, int stepLength, BiConsumer<Vec3i, BlockBox> biConsumer) {
-        BlockBox shrunk = shrinkWithStep(blockBox, stepLength);
-        forEachInBox(shrinkWithStep(blockBox, stepLength, false), vec3i -> {
+    public static void consumeAsDividedBoxes(BlockBox outerBox, int stepLength, Fluff.TriConsumer<Vec3i, Boolean, BlockBox> triConsumer) {
+        BlockBox shrunk = shrinkWithStep(outerBox, stepLength);
+        forEachInBox(shrinkWithStep(outerBox, stepLength, false), vec3i -> {
             int x1 = vec3i.getX() * stepLength;
             int y1 = vec3i.getY() * stepLength;
             int z1 = vec3i.getZ() * stepLength;
-            BlockBox blockBox1 = new BlockBox(x1, y1, z1, x1 + stepLength - 1, y1 + stepLength - 1, z1 + stepLength - 1);
-            biConsumer.accept(vec3i, blockBox1);
+            BlockBox innerBox = new BlockBox(x1, y1, z1, x1 + stepLength - 1, y1 + stepLength - 1, z1 + stepLength - 1);
+            boolean isFullInnerBox;
+            if (!insides(innerBox, outerBox)) {
+                innerBox = intersection(innerBox, outerBox);
+                isFullInnerBox = false;
+            } else {
+                isFullInnerBox = true;
+            }
+            triConsumer.accept(vec3i, isFullInnerBox, innerBox);
         });
     }
 }
