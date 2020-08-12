@@ -8,18 +8,19 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkSectionPos;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
+import net.minecraft.world.chunk.ChunkSection;
 import net.minecraft.world.chunk.WorldChunk;
 
 public class MaskerWorldUtils {
 
     public final static BlockState AIR_BLOCK_STATE = Blocks.AIR.getDefaultState();
 
-    public static boolean shouldHideBlock(BlockPos blockPos, WorldChunk chunk) {
-
+    private static boolean shouldHideBlock(BlockPos blockPos, ChunkSection section) {
+        return false;
     }
 
-    public static boolean shouldHideBlock(int inChunkPosX, int inChunkPosZ, int height, WorldChunk chunk) {
-
+    public static boolean shouldHideBlock(BlockPos blockPos, WorldChunk chunk) {
+        return shouldHideBlock(blockPos, chunk.getSectionArray()[blockPos.getY() >> 4]);
     }
 
     public static boolean shouldHideBlock(BlockPos blockPos, World world) {
@@ -34,7 +35,16 @@ public class MaskerWorldUtils {
     }
 
     public static void setBoxedBlockMaskerStates(World world, BlockBox box, boolean value) {
-
+        BoxUtils.consumeAsDividedBoxes(box, 16, ((secPos, isFullInnerBox, blockBox) -> {
+            ChunkSectionInterface sectionInterface = (ChunkSectionInterface) world.getChunk(secPos.getX(), secPos.getZ()).getSectionArray()[secPos.getY()];
+            if (isFullInnerBox) {
+                sectionInterface.setMaskerStateAll(value);
+            } else {
+                BoxUtils.forEachInBox(blockBox, (x, y, z) ->
+                        sectionInterface.setMaskerState(x, y, z, value, false));
+                sectionInterface.doCheck();
+            }
+        }), true);
     }
 
     public static void revertBlockMaskerState(World world, BlockPos pos) {
@@ -44,7 +54,12 @@ public class MaskerWorldUtils {
     }
 
     public static void revertBoxedBlockMaskerStates(World world, BlockBox box) {
-
+        BoxUtils.consumeAsDividedBoxes(box, 16, ((secPos, isFullInnerBox, blockBox) -> {
+            ChunkSectionInterface sectionInterface = (ChunkSectionInterface) world.getChunk(secPos.getX(), secPos.getZ()).getSectionArray()[secPos.getY()];
+            BoxUtils.forEachInBox(blockBox, (x, y, z) ->
+                    sectionInterface.setMaskerState(x, y, z, !sectionInterface.getMaskerState(x, y, z), false));
+            sectionInterface.doCheck();
+        }), true);
     }
 
     public static boolean getBlockMaskerState(World world, BlockPos pos) {

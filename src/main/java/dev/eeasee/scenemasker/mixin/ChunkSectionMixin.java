@@ -86,6 +86,11 @@ public class ChunkSectionMixin implements ChunkSectionInterface {
     }
 
     @Override
+    public byte[] toByteArray() {
+        return (this.maskedBlocks == null) ? null : BooleanUtils.convertToByteArray(this.maskedBlocks);
+    }
+
+    @Override
     public void setMaskerStates(boolean[] booleans) {
         if (booleans == null || !BooleanUtils.or(booleans)) {
             maskedBlocks = null;
@@ -99,8 +104,13 @@ public class ChunkSectionMixin implements ChunkSectionInterface {
     }
 
     @Override
-    public void setMaskerStatesEmpty() {
-        this.maskedBlocks = null;
+    public void setMaskerStateAll(boolean value) {
+        if (value) {
+            maskedBlocks = BooleanUtils.newBooleans4096False();
+        } else {
+            maskedBlocks = null;
+        }
+        isMaskerChanged = true;
     }
 
     @Override

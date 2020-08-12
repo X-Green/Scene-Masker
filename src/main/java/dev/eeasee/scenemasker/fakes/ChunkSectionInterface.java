@@ -19,9 +19,11 @@ public interface ChunkSectionInterface {
 
     boolean[] getMaskerStatesArrayCopied();
 
+    byte[] toByteArray();
+
     void setMaskerStates(boolean[] booleans);
 
-    void setMaskerStatesEmpty();
+    void setMaskerStateAll(boolean value);
 
     boolean isMaskerChanged();
 

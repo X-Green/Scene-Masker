@@ -1,21 +1,17 @@
 package dev.eeasee.scenemasker.utils;
 
-import carpet.script.Fluff;
 import com.google.common.collect.Lists;
 import net.minecraft.util.math.BlockBox;
-import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Vec3i;
 
 import java.util.List;
-import java.util.function.BiConsumer;
-import java.util.function.Consumer;
 
 public class BoxUtils {
-    public static void forEachInBox(BlockBox blockBox, Consumer<Vec3i> consumer) {
+    public static void forEachInBox(BlockBox blockBox, FunctionUtils.TriConsumer<Integer, Integer, Integer> consumer) {
         for (int x = blockBox.minX; x <= blockBox.maxX; x++)
             for (int y = blockBox.minY; y <= blockBox.maxY; y++)
                 for (int z = blockBox.minZ; z <= blockBox.maxZ; z++)
-                    consumer.accept(new Vec3i(x, y, z));
+                    consumer.accept(x, y, z);
     }
 
     public static BlockBox shrinkWithStep(BlockBox blockBox, int stepLength) {
@@ -89,31 +85,30 @@ public class BoxUtils {
     public static List<BlockBox> divideToBoxes(BlockBox blockBox, int stepLength) {
         BlockBox shrunk = shrinkWithStep(blockBox, stepLength);
         List<BlockBox> boxes = Lists.newArrayList();
-        forEachInBox(shrinkWithStep(blockBox, stepLength, false), vec3i -> {
-            int x1 = vec3i.getX() * stepLength;
-            int y1 = vec3i.getY() * stepLength;
-            int z1 = vec3i.getZ() * stepLength;
+        forEachInBox(shrinkWithStep(blockBox, stepLength, false), (x, y, z) -> {
+            int x1 = x * stepLength;
+            int y1 = y * stepLength;
+            int z1 = z * stepLength;
             BlockBox blockBox1 = new BlockBox(x1, y1, z1, x1 + stepLength - 1, y1 + stepLength - 1, z1 + stepLength - 1);
             boxes.add(intersection(blockBox, blockBox1));
         });
         return boxes;
     }
 
-    public static void consumeAsDividedBoxes(BlockBox outerBox, int stepLength, Fluff.TriConsumer<Vec3i, Boolean, BlockBox> triConsumer) {
-        BlockBox shrunk = shrinkWithStep(outerBox, stepLength);
-        forEachInBox(shrinkWithStep(outerBox, stepLength, false), vec3i -> {
-            int x1 = vec3i.getX() * stepLength;
-            int y1 = vec3i.getY() * stepLength;
-            int z1 = vec3i.getZ() * stepLength;
+    public static void consumeAsDividedBoxes(BlockBox outerBox, int stepLength, FunctionUtils.TriConsumer<Vec3i, Boolean, BlockBox> triConsumer, boolean doFullInnerBoxJudge) {
+        forEachInBox(shrinkWithStep(outerBox, stepLength, false), (x, y, z) -> {
+            int x1 = x * stepLength;
+            int y1 = y * stepLength;
+            int z1 = z * stepLength;
             BlockBox innerBox = new BlockBox(x1, y1, z1, x1 + stepLength - 1, y1 + stepLength - 1, z1 + stepLength - 1);
             boolean isFullInnerBox;
-            if (!insides(innerBox, outerBox)) {
+            if (doFullInnerBoxJudge && !insides(innerBox, outerBox)) {
                 innerBox = intersection(innerBox, outerBox);
                 isFullInnerBox = false;
             } else {
                 isFullInnerBox = true;
             }
-            triConsumer.accept(vec3i, isFullInnerBox, innerBox);
+            triConsumer.accept(new Vec3i(x, y, z), isFullInnerBox, innerBox);
         });
     }
 }
