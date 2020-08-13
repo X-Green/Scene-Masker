@@ -1,4 +1,4 @@
-package dev.eeasee.scenemasker.network.data.s2c;
+package dev.eeasee.scenemasker.network.packet.s2c;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.fabric.api.network.PacketContext;

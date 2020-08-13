@@ -1,34 +1,35 @@
-package dev.eeasee.scenemasker.network.data.s2c;
+package dev.eeasee.scenemasker.network.packet.s2c;
 
 import dev.eeasee.scenemasker.Masker;
-import dev.eeasee.scenemasker.fakes.ChunkSectionInterface;
+import dev.eeasee.scenemasker.chunk.MaskedChunk;
+import dev.eeasee.scenemasker.chunk.MaskedSection;
+import dev.eeasee.scenemasker.fakes.WorldChunkInterface;
 import dev.eeasee.scenemasker.utils.BooleanUtils;
 import io.netty.buffer.Unpooled;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.util.PacketByteBuf;
 import net.minecraft.util.math.ChunkPos;
-import net.minecraft.world.chunk.Chunk;
-import net.minecraft.world.chunk.ChunkSection;
+import net.minecraft.world.chunk.WorldChunk;
 
-public class ChunkUpdateData implements IDataS2C {
+public class ChunkUpdateS2C implements IDataS2C {
     private ChunkPos chunkPos;
 
     private byte[][] sectionBytesArrays = new byte[16][];
 
     private boolean[] sectionsToUpdate;
 
-    public ChunkUpdateData(Chunk chunk) {
+    public ChunkUpdateS2C(WorldChunk chunk) {
         if (chunk == null) {
             return;
         }
         chunkPos = chunk.getPos();
         sectionsToUpdate = new boolean[16];
-        ChunkSection[] sections = chunk.getSectionArray();
+        MaskedChunk maskedChunk = ((WorldChunkInterface) chunk).getMaskedChunk();
         for (int i = 0; i < 16; i++) {
-            ChunkSectionInterface sectionInterface = (ChunkSectionInterface) sections[i];
-            if (sectionInterface.isMaskerChanged()) {
+            MaskedSection maskedSection = maskedChunk.getMaskedSection(i);
+            if (maskedSection.isMaskerChanged()) {
                 sectionsToUpdate[i] = true;
-                sectionBytesArrays[i] = sectionInterface.toByteArray();
+                sectionBytesArrays[i] = maskedSection.toByteArray();
             }
         }
         if (!BooleanUtils.or(sectionsToUpdate)) {
@@ -36,7 +37,7 @@ public class ChunkUpdateData implements IDataS2C {
         }
     }
 
-    public ChunkUpdateData() {
+    public ChunkUpdateS2C() {
     }
 
     @Override
@@ -45,13 +46,13 @@ public class ChunkUpdateData implements IDataS2C {
             Masker.LOGGER.warn("(ChunkUpdateData for Masker) Invalid Chunk Update Data Applied To Client World");
             return;
         }
-        ChunkSection[] sections = clientPlayerEntity.world.getChunk(chunkPos.x, chunkPos.z).getSectionArray();
-        ChunkSectionInterface sectionInterface;
+        MaskedChunk maskedChunk = ((WorldChunkInterface) clientPlayerEntity.world.getChunk(chunkPos.x, chunkPos.z)).getMaskedChunk();
+        MaskedSection maskedSection;
         for (int i = 0; i < 16; i++) {
             if (sectionsToUpdate[i]) {
-                sectionInterface = (ChunkSectionInterface) sections[i];
+                maskedSection = maskedChunk.getMaskedSection(i);
                 byte[] bytes = sectionBytesArrays[i];
-                sectionInterface.setMaskerStates((bytes == null) ? null : BooleanUtils.convertToBooleanArray(bytes));
+                maskedSection.setMaskerStates((bytes == null) ? null : BooleanUtils.convertToBooleanArray(bytes));
             }
         }
     }

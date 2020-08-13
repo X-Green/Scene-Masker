@@ -6,9 +6,7 @@
   "mixins": [
     "BlockEntityRenderDispatcherMixin",
     "ChunkRenderRegionMixin",
-    "ChunkSectionMixin",
-    "ServerWorldMixin",
-    "WorldMixin"
+    "WorldChunkMixin"
   ],
   "client": [
   ],

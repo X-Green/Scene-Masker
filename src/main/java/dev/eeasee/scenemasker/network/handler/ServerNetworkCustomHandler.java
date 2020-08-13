@@ -1,6 +1,6 @@
 package dev.eeasee.scenemasker.network.handler;
 
-import dev.eeasee.scenemasker.network.data.s2c.IDataS2C;
+import dev.eeasee.scenemasker.network.packet.s2c.IDataS2C;
 import net.fabricmc.fabric.api.network.ServerSidePacketRegistry;
 import net.fabricmc.fabric.api.server.PlayerStream;
 import net.minecraft.entity.player.PlayerEntity;

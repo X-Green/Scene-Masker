@@ -1,19 +1,19 @@
-package dev.eeasee.scenemasker.network.data.s2c;
+package dev.eeasee.scenemasker.network.packet.s2c;
 
 import dev.eeasee.scenemasker.client.MaskProperties;
 import io.netty.buffer.Unpooled;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.util.PacketByteBuf;
 
-public class SettingsData implements IDataS2C {
+public class SettingsS2C implements IDataS2C {
 
     private String name;
     private String value;
 
-    public SettingsData() {
+    public SettingsS2C() {
     }
 
-    public SettingsData(String name, String value) {
+    public SettingsS2C(String name, String value) {
         this.name = name;
         this.value = value;
     }

@@ -1,4 +1,4 @@
-package dev.eeasee.scenemasker.network.data.s2c;
+package dev.eeasee.scenemasker.network.packet.s2c;
 
 import dev.eeasee.scenemasker.utils.MaskerWorldUtils;
 import io.netty.buffer.Unpooled;
@@ -7,18 +7,18 @@ import net.minecraft.util.PacketByteBuf;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-public class MultiBlockUpdateData implements IDataS2C {
+public class MultiBlockUpdateS2C implements IDataS2C {
 
     private BlockPos[] stateTruePoses;
 
     private BlockPos[] stateFalsePoses;
 
-    public MultiBlockUpdateData(BlockPos[] stateTruePoses, BlockPos[] stateFalsePoses) {
+    public MultiBlockUpdateS2C(BlockPos[] stateTruePoses, BlockPos[] stateFalsePoses) {
         this.stateTruePoses = stateTruePoses;
         this.stateFalsePoses = stateFalsePoses;
     }
 
-    public MultiBlockUpdateData() {
+    public MultiBlockUpdateS2C() {
 
     }
 
