@@ -17,6 +17,9 @@
     "main": [
       "dev.eeasee.scenemasker.Masker"
     ],
+    "modmenu": [
+      "dev.eeasee.scenemasker.compat.ModMenuImpl"
+    ],
     "client": [
       "dev.eeasee.scenemasker.client.MaskerClientInit"
     ]
@@ -27,7 +30,8 @@
   "depends": {
     "fabricloader": ">=0.7.4",
     "fabric": "*",
-    "minecraft": "1.15.2"
+    "minecraft": "1.15.2",
+    "malilib": ">=0.10.0-dev.20"
   },
   "suggests": {
   }

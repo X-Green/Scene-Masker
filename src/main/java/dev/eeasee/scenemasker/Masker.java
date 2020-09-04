@@ -9,8 +9,7 @@ import org.apache.logging.log4j.Logger;
 
 public class Masker implements ModInitializer {
 
-    public static final Identifier MASKER_CHANNEL = new Identifier("eeasee_masker");
-    public static final String NAME_SPACE = "eeasee_masker";
+    public static final String MOD_ID = "eeasee_masker";
     public static final Logger LOGGER = LogManager.getLogger();
 
     @Override

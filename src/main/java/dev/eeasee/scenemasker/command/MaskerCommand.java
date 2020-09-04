@@ -2,12 +2,14 @@ package dev.eeasee.scenemasker.command;
 
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.BoolArgumentType;
+import com.mojang.brigadier.arguments.FloatArgumentType;
 import com.mojang.brigadier.arguments.IntegerArgumentType;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import dev.eeasee.scenemasker.utils.MaskerWorldUtils;
 import net.minecraft.command.arguments.BlockPosArgumentType;
+import net.minecraft.server.command.CommandSource;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.util.math.BlockBox;
 import net.minecraft.util.math.BlockPos;
@@ -21,32 +23,39 @@ public class MaskerCommand {
         LiteralArgumentBuilder<ServerCommandSource> literalArgumentBuilder = literal("masker");
         literalArgumentBuilder = literalArgumentBuilder
                 .executes(MaskerCommand::mainMenu)
-                .then(literal("settings")
-                        .executes(MaskerCommand::settingsMenu)
+                .then(literal("config")
+                        .requires(source -> false) //Deprecated command
                         .then(literal("layer")
-                                .then(argument("layer applied", IntegerArgumentType.integer(-1, 255))
-                                        .executes(MaskerCommand::changeDisplayLayerCommand)))
-                        .then(literal("swap")
-                                .executes(MaskerCommand::swapRenderType)))
+                                .then(argument("layer applied", IntegerArgumentType.integer(-1, 255))))
+                        .then(literal("revert-all")
+                                .then(argument("do reverting", BoolArgumentType.bool())))
+                        .then(literal("opacity")
+                                .then(argument("opacity", FloatArgumentType.floatArg(0, 1))
+                                        .suggests(((context, builder) -> CommandSource.suggestMatching(new String[]{"0", "1"}, builder))))))
+                .then(literal("config-menu")
+                        .executes(MaskerCommand::openConfigMenuCommand))
                 .then(literal("revert")
-                        .then(argument("from", BlockPosArgumentType.blockPos())
+                        .then(literal("range").then(argument("from", BlockPosArgumentType.blockPos())
                                 .then(argument("to", BlockPosArgumentType.blockPos())
-                                        .executes(MaskerCommand::revertBoxedBlocksCommand)))
-                        .then(literal("block")
+                                        .executes(MaskerCommand::setBoxedBlocks))))
+                        .then(literal("single")
                                 .then(argument("pos", BlockPosArgumentType.blockPos())
-                                        .executes(MaskerCommand::revertSingleBlockCommand))))
+                                        .executes(MaskerCommand::setSingleBlockCommand))))
                 .then(literal("set")
-                        .then(argument("value", BoolArgumentType.bool()))
-                        .then(argument("from", BlockPosArgumentType.blockPos())
-                                .then(argument("to", BlockPosArgumentType.blockPos())
-                                        .executes(MaskerCommand::setBoxedBlocks)))
-                        .then(literal("block")
-                                .then(argument("pos", BlockPosArgumentType.blockPos())
-                                        .executes(MaskerCommand::setSingleBlockCommand)
-                                )));
-
+                        .then(argument("value", BoolArgumentType.bool())
+                                .then(literal("range").then(argument("from", BlockPosArgumentType.blockPos())
+                                        .then(argument("to", BlockPosArgumentType.blockPos())
+                                                .executes(MaskerCommand::setBoxedBlocks))))
+                                .then(literal("single")
+                                        .then(argument("pos", BlockPosArgumentType.blockPos())
+                                                .executes(MaskerCommand::setSingleBlockCommand)
+                                        ))));
 
         dispatcher.register(literalArgumentBuilder);
+    }
+
+    private static int openConfigMenuCommand(CommandContext<ServerCommandSource> serverCommandSourceCommandContext) {
+        return 1;
     }
 
     private static int setSingleBlockCommand(CommandContext<ServerCommandSource> serverCommandSourceCommandContext) throws CommandSyntaxException {
@@ -63,33 +72,6 @@ public class MaskerCommand {
         BlockPos pos1 = BlockPosArgumentType.getBlockPos(serverCommandSourceCommandContext, "from");
         BlockPos pos2 = BlockPosArgumentType.getBlockPos(serverCommandSourceCommandContext, "to");
         MaskerWorldUtils.setBoxedBlockMaskerStates(world, new BlockBox(pos1, pos2), value);
-        return 1;
-    }
-
-    private static int revertSingleBlockCommand(CommandContext<ServerCommandSource> serverCommandSourceCommandContext) throws CommandSyntaxException {
-        World world = serverCommandSourceCommandContext.getSource().getWorld();
-        BlockPos pos = BlockPosArgumentType.getBlockPos(serverCommandSourceCommandContext, "pos");
-        MaskerWorldUtils.revertBlockMaskerState(world, pos);
-        return 1;
-    }
-
-    private static int revertBoxedBlocksCommand(CommandContext<ServerCommandSource> serverCommandSourceCommandContext) throws CommandSyntaxException {
-        World world = serverCommandSourceCommandContext.getSource().getWorld();
-        BlockPos pos1 = BlockPosArgumentType.getBlockPos(serverCommandSourceCommandContext, "from");
-        BlockPos pos2 = BlockPosArgumentType.getBlockPos(serverCommandSourceCommandContext, "to");
-        MaskerWorldUtils.revertBoxedBlockMaskerStates(world, new BlockBox(pos1, pos2));
-        return 1;
-    }
-
-    private static int changeDisplayLayerCommand(CommandContext<ServerCommandSource> serverCommandSourceCommandContext) {
-        return 1;
-    }
-
-    private static int swapRenderType(CommandContext<ServerCommandSource> serverCommandSourceCommandContext) {
-        return 1;
-    }
-
-    private static int settingsMenu(CommandContext<ServerCommandSource> serverCommandSourceCommandContext) {
         return 1;
     }
 
