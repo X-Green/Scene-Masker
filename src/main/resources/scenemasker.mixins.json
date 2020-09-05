@@ -4,8 +4,7 @@
   "package": "dev.eeasee.scenemasker.mixin",
   "compatibilityLevel": "JAVA_8",
   "mixins": [
-    "BlockEntityRenderDispatcherMixin",
-    "ChunkRenderRegionMixin",
+    "ChunkBuilderRebuildTaskMixin",
     "WorldChunkMixin"
   ],
   "client": [
